@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mmsfa_flu/utils/usertodatabase.dart';
+//import 'package:mmsfa_flu/mainpages/ui/listview_student.dart';
 
-class LoginPage extends StatefulWidget {
+class  RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State< RegisterPage> {
   //user need to input the email and password to i need to text editing
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passWordController = new TextEditingController();
@@ -15,12 +17,13 @@ class _LoginPageState extends State<LoginPage> {
     //now i build the user interface
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(14.0),
+        padding: EdgeInsets.all(50.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             TextField(
-              decoration: InputDecoration(icon: Icon(Icons.email)),
+              decoration: InputDecoration(icon: Icon(Icons.email,color: Colors.indigo,)),
               controller: _emailController,
             ),
             // sizedBox it give space between more widget
@@ -28,38 +31,24 @@ class _LoginPageState extends State<LoginPage> {
               height: 15.0,
             ),
             TextField(
-              decoration: InputDecoration(icon: Icon(Icons.vpn_key)),
+              decoration: InputDecoration(icon: Icon(Icons.vpn_key,color: Colors.indigo,)),
               controller: _passWordController,
             ),
             SizedBox(
-              height: 15.0,
+              height: 60.0,
             ),
             MaterialButton(
               child: Text('Login', style: TextStyle(color: Colors.white)),
               color: Colors.indigo,
               onPressed: () {
-                FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: _emailController.text, password: _passWordController.text).then((FirebaseUser user){
-                      //pushReplacementNamed can not back to home page
-                  Navigator.of(context).pushReplacementNamed('/home').catchError((e){
-                    print(e);
-                  });
+                Navigator.of(context).pushNamed('/homepage');
+               // print ("onClick");
+                FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: _emailController.text, password: _passWordController.text).then((signedUser){
+                  UserToDatabase().addNewUser(signedUser, context);
+                }).catchError((e){
+                  print(e);
                 });
-              },
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            Text('Don\'t have an account'),
-            SizedBox(
-              height: 15.0,
-            ),
-            MaterialButton(
-              child: Text('register', style: TextStyle(color: Colors.white)),
-              color: Colors.indigo,
-              onPressed: () {
-                //pushNamed can back to home
-                Navigator.of(context).pushNamed('/register');
               },
             ),
           ],
@@ -68,3 +57,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

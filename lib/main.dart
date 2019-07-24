@@ -1,45 +1,19 @@
 import 'package:flutter/material.dart';
-//import 'splshscreen/loader.dart';
-import 'package:mmsfa_flu/loginpages/home.dart';
 import 'package:mmsfa_flu/loginpages/signin.dart';
-import 'package:mmsfa_flu/loginpages/register.dart';
-
+import 'package:mmsfa_flu/splshscreen/loader.dart';
+import 'mainpages/ui/home_page.dart';
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: new LoginPage(),
+        home: new  ColorLoader3(),
        routes: <String ,WidgetBuilder>{
-        '/landingpage':(BuildContext context)=>new MyApp(),
-        '/register':(BuildContext context)=>new RegisterPage(),
-         '/home':(BuildContext context)=>new Home(),
+        '/landingpage':(BuildContext context)=> MyApp(),
+        '/register':(BuildContext context)=> RegisterPage(),
+         '/homepage':(BuildContext context)=> Homepage(),
         },
-
-      //ColorLoader3(),
-
+      theme: ThemeData(primaryColor: Colors.indigo),
     );
   }
-
-
-
 }
-//class MyHomePage extends StatefulWidget {
-//  MyHomePage({Key key, this.title}) : super(key: key);
-//  final String title;
-//  @override
-//  _MyHomePageState createState() => _MyHomePageState();
-//}
-//class _MyHomePageState extends State<MyHomePage> {
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      body: Center(
-//        child: ColorLoader3(),
-//
-//      ),
-//
-//    );
-//  }
-//}
