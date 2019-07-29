@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mmsfa_flu/utils/usertodatabase.dart';
-//import 'package:mmsfa_flu/mainpages/ui/listview_student.dart';
+import '../mainpages/ui/home_page.dart';
+import 'DataBofLogin.dart';
 
 class  RegisterPage extends StatefulWidget {
   @override
@@ -51,10 +52,54 @@ class _RegisterPageState extends State< RegisterPage> {
                 });
               },
             ),
+            _signInButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {
+        signInWithGoogle().whenComplete(() {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return Homepage();
+              },
+            ),
+          );
+        });
+      },
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assest\google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
           ],
         ),
       ),
     );
   }
 }
+
+
 
