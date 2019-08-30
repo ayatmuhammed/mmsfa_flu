@@ -14,8 +14,6 @@ class Homepage extends StatefulWidget {
 final todoReference=FirebaseDatabase.instance.reference().child('todo');
 
 class _HomepageState extends State<Homepage>{
-  Drawer drawer = new Drawer();
-
   //the user that i takes it from database i put them in list
   List<Todo> classes;
   // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
@@ -46,7 +44,35 @@ class _HomepageState extends State<Homepage>{
     return MaterialApp(
       title: 'Student DB',
       home: Scaffold(
-        drawer: drawer,
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.indigo[100],
+                    radius: 10.0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                ),
+                ListTile(
+                  title: Text('Report'),
+                  onTap: () {
+
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('Logout'),
+                  onTap: () {
+
+                  },
+                ),
+              ],
+            ),
+          ),
         drawerScrimColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.indigo,
