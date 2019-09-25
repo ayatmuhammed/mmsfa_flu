@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mmsfa_flu/loginpages/signin.dart';
 import 'mainpages/ui/home_page.dart';
-void main() => runApp(MyApp());
+
+//bool firstRun;
+Future main() async {
+  //SharedPreferences pref= await SharedPreferences.getInstance();
+ // firstRun= pref.getBool('firstRun')?? true;
+
+  runApp(MyApp());
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: new  Login_SigninPage(),
+        home:
+        //firstRun? SplashScreen():
+        Login_SigninPage(),
        routes: <String ,WidgetBuilder>{
         '/landingpage':(BuildContext context)=> MyApp(),
         '/register':(BuildContext context)=> Login_SigninPage(),

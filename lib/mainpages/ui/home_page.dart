@@ -1,7 +1,9 @@
 //her i show all student that i will added it
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:mmsfa_flu/loginpages/signin.dart';
 import 'package:mmsfa_flu/mainpages/model/class.dart';
 import 'package:mmsfa_flu/mainpages/ui/ClassinfoUpdate.dart';
 import 'package:mmsfa_flu/student_pages/listviewstudent.dart';
@@ -14,12 +16,18 @@ class Homepage extends StatefulWidget {
 final todoReference=FirebaseDatabase.instance.reference().child('todo');
 
 class _HomepageState extends State<Homepage>{
+//final Auth=FirebaseAuth.instance;
   //the user that i takes it from database i put them in list
   List<Todo> classes;
   // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
   StreamSubscription<Event> _onClassesAddedSubscription;
   StreamSubscription<Event> _onnClassesChangedSubscription; //his means when i add new user to list it is auto update and add the user
   // now i want to init. th database i means the database is download automatically
+  Future<void>_signOut()async{
+    FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginSignUpPage()));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +48,7 @@ class _HomepageState extends State<Homepage>{
 
 //now i design the ui to the user
   @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Student DB',
@@ -60,14 +69,14 @@ class _HomepageState extends State<Homepage>{
                 ListTile(
                   title: Text('Report'),
                   onTap: () {
+                   // Navigator.pop(context);
 
-                    Navigator.pop(context);
                   },
                 ),
                 ListTile(
                   title: Text('Logout'),
                   onTap: () {
-
+                    _signOut();
                   },
                 ),
               ],

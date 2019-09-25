@@ -80,12 +80,12 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
 
-  @override
-  void initState() {
-    _errorMessage = "";
-    _isLoading = false;
-    super.initState();
-  }
+//  @override
+//  void initState() {
+//    _errorMessage = "";
+//    _isLoading = false;
+//    super.initState();
+//  }
 
   void _changeFormToSignUp() {
     _formKey.currentState.reset();
@@ -320,6 +320,8 @@ class _Login_SigninPageState extends State< Login_SigninPage> {
             Padding(padding:EdgeInsets.only(bottom: 25.0) ),
             _signInButton(),
           ],
+
+
         ),
       ),
     );
@@ -341,7 +343,8 @@ class _Login_SigninPageState extends State< Login_SigninPage> {
       },
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.indigoAccent[100]),
-          borderRadius: BorderRadius.circular(40)),
+          borderRadius: BorderRadius.circular(40)
+      ),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.white),
       child: Padding(
@@ -350,7 +353,7 @@ class _Login_SigninPageState extends State< Login_SigninPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-           Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+           Image(image: AssetImage("assets/google_logo.png"), height: 20.0),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
