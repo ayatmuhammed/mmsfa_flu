@@ -25,7 +25,7 @@ class _HomepageState extends State<Homepage>{
   // now i want to init. th database i means the database is download automatically
   Future<void>_signOut()async{
     FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginSignUpPage()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginSignInPage()));
   }
 
   @override

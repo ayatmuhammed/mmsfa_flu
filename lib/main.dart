@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         home:
         //firstRun? SplashScreen():
-        Login_SigninPage(),
+        LoginSignInPage(),
        routes: <String ,WidgetBuilder>{
         '/landingpage':(BuildContext context)=> MyApp(),
-        '/register':(BuildContext context)=> Login_SigninPage(),
+        '/register':(BuildContext context)=> LoginSignInPage(),
          '/homepage':(BuildContext context)=> Homepage(),
         },
       theme: ThemeData(primaryColor: Colors.indigo),
