@@ -160,7 +160,7 @@ class _HomepageState extends State<Homepage>{
 
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add,color: Colors.white,),backgroundColor: Colors.indigo,
-          onPressed:()=>_createNewclass(context),
+          onPressed:()=>_createNewClass(context),
         ),
       ),
     );
@@ -206,7 +206,7 @@ class _HomepageState extends State<Homepage>{
   }
 //when i want to create new user
 
-  void _createNewclass( BuildContext context)async{
+  void _createNewClass( BuildContext context)async{
 
     await Navigator.push(context,
       MaterialPageRoute(builder:(context)=>  InformationScreen(Todo(null, '', '', ''),

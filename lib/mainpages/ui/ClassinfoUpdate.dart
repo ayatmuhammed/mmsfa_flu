@@ -19,10 +19,10 @@ final studentReference=FirebaseDatabase.instance.reference().child('todo');
 
 class _InformationScreenState extends State<InformationScreen> {
   //user input the data so we need to controller
-  TextEditingController _lecturecontroller;
-  TextEditingController _departmentcontroller;
-  TextEditingController _branchcontroller;
-  TextEditingController _teachercontroller;
+  TextEditingController _lectureController;
+  TextEditingController _departmentController;
+  TextEditingController _branchController;
+  TextEditingController _teacherController;
   //now we int the information by using int function
 
 
@@ -30,10 +30,10 @@ class _InformationScreenState extends State<InformationScreen> {
   void initState() {
 
     super.initState();
-    _lecturecontroller =new TextEditingController(text: widget.todo.lecture);
-    _departmentcontroller=new TextEditingController(text: widget.todo.department);
-    _branchcontroller=new TextEditingController(text: widget.todo.branch);
-    _teachercontroller=new TextEditingController(text: widget.todo.teacher);
+    _lectureController =new TextEditingController(text: widget.todo.lecture);
+    _departmentController=new TextEditingController(text: widget.todo.department);
+    _branchController=new TextEditingController(text: widget.todo.branch);
+    _teacherController=new TextEditingController(text: widget.todo.teacher);
   }
 
   @override
@@ -57,25 +57,25 @@ class _InformationScreenState extends State<InformationScreen> {
         child: Column(
           children: <Widget>[TextField(
             style: TextStyle(fontSize:16.0,color: Colors.indigo ),
-            controller: _lecturecontroller,
+            controller: _lectureController,
             decoration: InputDecoration(icon: Icon(Icons.edit),labelText: 'lecture',),
           ),
             //  Padding(padding: EdgeInsets.all(5.0)),
             TextField(
               style: TextStyle(fontSize:16.0,color: Colors.indigo ),
-              controller: _departmentcontroller,
+              controller: _departmentController,
               decoration: InputDecoration(icon: Icon(Icons.edit),labelText: 'department'),
             ),
             //Padding(padding: EdgeInsets.all(5.0)),
             TextField(
               style: TextStyle(fontSize:16.0,color: Colors.indigo ),
-              controller: _branchcontroller,
+              controller: _branchController,
               decoration: InputDecoration(icon: Icon(Icons.edit),labelText: 'branch'),
             ),
             // Padding(padding: EdgeInsets.all(5.0)),
             TextField(
               style: TextStyle(fontSize:16.0,color: Colors.indigo ),
-              controller: _teachercontroller,
+              controller: _teacherController,
               decoration: InputDecoration(icon: Icon(Icons.edit),labelText: 'teacher'),
             ),
             //Padding(padding: EdgeInsets.all(5.0)),
@@ -90,19 +90,19 @@ class _InformationScreenState extends State<InformationScreen> {
                 onPressed:(){
                   if ((widget.todo.key !=null)){
                     studentReference.child(widget.todo.key).set({
-                      'lecture':_lecturecontroller.text,
-                      'department':_departmentcontroller.text,
-                      'branch':_branchcontroller.text,
-                      'teacher':_teachercontroller.text,
+                      'lecture':_lectureController.text,
+                      'department':_departmentController.text,
+                      'branch':_branchController.text,
+                      'teacher':_teacherController.text,
                     }).then((_){
                       Navigator.pop(context);
                     });
                   }else{
                     studentReference.push().set({
-                      'lecture':_lecturecontroller.text,
-                      'department':_departmentcontroller.text,
-                      'branch':_branchcontroller.text,
-                      'teacher':_teachercontroller.text,
+                      'lecture':_lectureController.text,
+                      'department':_departmentController.text,
+                      'branch':_branchController.text,
+                      'teacher':_teacherController.text,
                     }).then((_) {
                       Navigator.pop(context);
                     });
