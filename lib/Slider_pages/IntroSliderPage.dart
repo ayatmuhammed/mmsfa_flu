@@ -3,7 +3,7 @@ import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:mmsfa_flu/loginpages/signin.dart';
 
-class Slider extends StatelessWidget {
+class MySlider extends StatelessWidget {
   //making list of pages needed to pass in IntroViewsFlutter constructor.
   final pages = [
     PageViewModel(

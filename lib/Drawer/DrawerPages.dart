@@ -1,3 +1,57 @@
+//import 'dart:io';
+//
+//import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:flutter/material.dart';
+//import 'package:image_picker/image_picker.dart';
+//class  ProfileImage extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return MyProfileImage();
+//  }
+//}
+//class MyProfileImage extends StatefulWidget {
+//  @override
+//  _MyProfileImageState createState() => _MyProfileImageState();
+//}
+//
+//class _MyProfileImageState extends State<MyProfileImage> {
+//  File _image;
+//
+//
+//  @override
+//  Widget build(BuildContext context) {
+//   Future getImage()async{
+//     var image=await ImagePicker.pickImage(source: ImageSource.gallery);
+//
+//     setState(() {
+//       _image=image;
+//       print('ImagePath $_image');
+//     });
+//   }
+//
+//  }
+//
+//  Future uploadPicture(BuildContext context)async{
+//    String fileName = basename(_image.path);
+//    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+//    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+//    StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
+//    setState(() {
+//      print("Profile Picture uploaded");
+//      Scaffold.of(context).showSnackBar(
+//          SnackBar(content: Text('Profile Picture Uploaded')));
+//    }
+//    );
+//
+//    return Scaffold(
+//
+//    );
+//
+//}
+//
+//
+//
+
 
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter/material.dart';
