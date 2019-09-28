@@ -13,9 +13,15 @@ import 'package:mmsfa_flu/student_pages/listviewstudent.dart';
 import 'package:path/path.dart';
 
 class Homepage extends StatefulWidget {
-  Homepage() : super();
 
-  final String title = "Pick Image";
+const  Homepage(
+{Key key,
+  this.user,
+}):super(key:key);
+
+final FirebaseUser user;
+//Homepage() : super();
+ final String title = "Pick Image";
   @override
   _HomepageState createState() => _HomepageState();
 }
@@ -101,25 +107,25 @@ class _HomepageState extends State<Homepage> {
             children: <Widget>[
               DrawerHeader(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     CircleAvatar(
                       backgroundColor: Colors.indigo[100],
                       radius: 50.0,
                       child: showImage(),
-
                     ),
 
                     IconButton(
                       icon: Icon(
                         Icons.add_a_photo,
-                        size: 20.0,
                       ),
                       onPressed: () {
                         // getImage();
                         pickImageFromGallery(ImageSource.gallery);
                       },
                     ),
+
+
                   ],
                 ),
 //                decoration: BoxDecoration(
@@ -161,7 +167,7 @@ class _HomepageState extends State<Homepage> {
                 color: Colors.purple[50],
                 child: Column(
                   children: <Widget>[
-                    // Divider(color: Colors.indigo,height: 6.0),
+
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -179,7 +185,6 @@ class _HomepageState extends State<Homepage> {
                               '${classes[posi].department}',
                               style: TextStyle(
                                 color: Colors.black,
-                                //  backgroundColor: Colors.purple[50],
                                 fontSize: 14.0,
                               ),
                             ),
@@ -193,7 +198,6 @@ class _HomepageState extends State<Homepage> {
                                     '${posi + 1}',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      //  backgroundColor: Colors.purple[50],
                                       fontSize: 14.0,
                                     ),
                                   ),

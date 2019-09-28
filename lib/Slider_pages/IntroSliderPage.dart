@@ -11,10 +11,10 @@ class MySlider extends StatelessWidget {
         // iconImageAssetPath: 'assets/air-hostess.png',
         bubble: Image.asset(''),
         body: Text(
-          'Haselfree  booking  of  flight  tickets  with  full  refund  on  cancelation',
+          'Mobile Managment System For Attendent Student ',
         ),
         title: Text(
-          'Flights',
+          'MMSFAS',
         ),
         textStyle: TextStyle(fontFamily: 'MyFont', color: Colors.white),
         mainImage: Image.asset(

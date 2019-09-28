@@ -278,12 +278,18 @@ class  LoginSignInPage extends StatefulWidget {
 class _LoginSignInPageState extends State< LoginSignInPage> {
   final GlobalKey<FormState>formState=GlobalKey<FormState>();
 String _email,_password;
-Login(){
-  final formdata=formState.currentState;
-  if(formdata.validate()){
-    formdata.save();
-    print(_email);
-    print(_password);
+Login()async{
+  final formData=formState.currentState;
+  if(formData.validate()){
+    formData.save();
+   try{
+     FirebaseUser fireuser=await FirebaseAuth.instance.signInWithEmailAndPassword(email:_email, password: _password);
+     Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> Homepage(user:fireuser)));
+    print(fireuser.email);
+   }
+   catch(error){
+     print(error.message);
+   }
   }
 }
   //user need to input the email and password to i need to text editing
