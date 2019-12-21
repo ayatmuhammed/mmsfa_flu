@@ -2,15 +2,16 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mmsfa_flu/loginpages/signin.dart';
+import 'package:mmsfa_flu/Drawer/DrawerPages.dart';
 import 'package:mmsfa_flu/mainpages/model/class.dart';
 import 'package:mmsfa_flu/mainpages/ui/ClassinfoUpdate.dart';
 import 'package:mmsfa_flu/student_pages/listviewstudent.dart';
-import 'package:path/path.dart';
+import 'package:mmsfa_flu/Profile_teacture/Photo_profile';
+
 
 class Homepage extends StatefulWidget {
 
@@ -29,6 +30,8 @@ final FirebaseUser user;
 final todoReference = FirebaseDatabase.instance.reference().child('todo');
 
 class _HomepageState extends State<Homepage> {
+
+
   Future<File> imageFile;
   pickImageFromGallery(ImageSource source)
   {
@@ -37,44 +40,14 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
-  Widget showImage() {
-    return FutureBuilder<File>(
-      future: imageFile,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          return Image.file(
-            snapshot.data,
-//            width: 300,
-//            height: 300,
-
-          );
-        } else if (snapshot.error != null) {
-          return const Text(
-            'Error Picking Image',
-            textAlign: TextAlign.center,
-          );
-        } else {
-          return const Text(
-            'No Image Selected',
-            textAlign: TextAlign.center,
-          );
-        }
-      },
-    );
-  }
 //final Auth=FirebaseAuth.instance;
   //the user that i takes it from database i put them in list
   List<Todo> classes;
   // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
   StreamSubscription<Event> _onClassesAddedSubscription;
   StreamSubscription<Event>
-      _onnClassesChangedSubscription; //his means when i add new user to list it is auto update and add the user
-  // now i want to init. th database i means the database is download automatically
-  Future<void> _signOut() async {
-    FirebaseAuth.instance.signOut();
-    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginSignInPage()));
-  }
+  _onnClassesChangedSubscription;
+
 
   @override
   void initState() {
@@ -86,7 +59,6 @@ class _HomepageState extends State<Homepage> {
         todoReference.onChildChanged.listen(_onClassesUpdated);
   }
 
-  //it is cancel to the subscription it is closed the database
 
   @override
   void dispose() {
@@ -103,45 +75,56 @@ class _HomepageState extends State<Homepage> {
       home: Scaffold(
         drawer: Drawer(
           child: ListView(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.all(1.0),
             children: <Widget>[
-              DrawerHeader(
-                child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.indigo[100],
-                      radius: 50.0,
-                      child: showImage(),
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: DrawerHeader(
+                  child: Padding(
+                    padding: const EdgeInsets.all( 1.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.indigo[100],
+                          radius: 50.0,
+                          child:
+                          AppImagePicker(),
+//                          profilePic(),
+                        ),
+//
+//                        IconButton(
+//                          icon: Icon(
+//                            Icons.add_a_photo,
+//                          ),
+//                          onPressed: () {
+//                           // _getImage(ImageSource);
+//                           // pickImageFromGallery(ImageSource.gallery);
+//                          },
+//                        ),
+
+                      ],
                     ),
+                  ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+               ),
 
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_a_photo,
-                      ),
-                      onPressed: () {
-                        // getImage();
-                        pickImageFromGallery(ImageSource.gallery);
-                      },
-                    ),
-
-
-                  ],
                 ),
-//                decoration: BoxDecoration(
-//                  color: Colors.white,
-//                ),
               ),
+
               ListTile(
-                title: Text('Report'),
+                title: Text('Generate Qr',style: TextStyle(color: Colors.indigo),),
                 onTap: () {
-                  // Navigator.pop(context);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) =>  GenerateQr()));
+
                 },
               ),
               ListTile(
-                title: Text('Logout'),
+                title: Text('Logout',style: TextStyle(color: Colors.indigo),),
                 onTap: () {
-                  _signOut();
+                  _exitApp(context);
                 },
               ),
             ],
@@ -247,7 +230,8 @@ class _HomepageState extends State<Homepage> {
   void _onClassesAdded(Event event) {
     setState(() {
       classes.add(new Todo.fromSnapshot(event.snapshot));
-    });
+    }
+    );
   }
 
   void _onClassesUpdated(Event event) {
@@ -256,7 +240,8 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       classes[classes.indexOf(oldClassValue)] =
           new Todo.fromSnapshot(event.snapshot);
-    });
+    }
+    );
   }
 
   //delete need to connect to FireBase so we need to async and await the result
@@ -296,4 +281,32 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
+}
+
+
+
+
+Future<bool>_exitApp(BuildContext context) {
+  return showDialog(
+    context: context,
+    child: AlertDialog(
+      title: Text('Do you want to exit this application?'),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () {
+            print("you choose no");
+            Navigator.of(context).pop(false);
+          },
+          child: Text('No'),
+        ),
+        FlatButton(
+          onPressed: () {
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          },
+          child: Text('Yes'),
+        ),
+      ],
+    ),
+  ) ??
+      false;
 }

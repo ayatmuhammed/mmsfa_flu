@@ -27,7 +27,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   String _password;
   String _errorMessage;
 
-  // Initial form is login form
+   //Initial form is login form
   FormMode _formMode = FormMode.LOGIN;
   bool _isIos;
   bool _isLoading;
@@ -276,22 +276,26 @@ class  LoginSignInPage extends StatefulWidget {
 }
 
 class _LoginSignInPageState extends State< LoginSignInPage> {
-  final GlobalKey<FormState>formState=GlobalKey<FormState>();
-String _email,_password;
-Login()async{
-  final formData=formState.currentState;
-  if(formData.validate()){
-    formData.save();
-   try{
-     FirebaseUser fireuser=await FirebaseAuth.instance.signInWithEmailAndPassword(email:_email, password: _password);
-     Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> Homepage(user:fireuser)));
-    print(fireuser.email);
-   }
-   catch(error){
-     print(error.message);
-   }
+  final GlobalKey<FormState>formState = GlobalKey<FormState>();
+  String _email, _password;
+
+  Login() async {
+    final formData = formState.currentState;
+    if (formData.validate()) {
+      formData.save();
+      try {
+        FirebaseUser fireuser = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Homepage(user: fireuser)));
+        print(fireuser.email);
+      }
+      catch (error) {
+        print(error.message);
+      }
+    }
   }
-}
+
   //user need to input the email and password to i need to text editing
   //TextEditingController _emailController = new TextEditingController();
   //TextEditingController _passWordController = new TextEditingController();
@@ -304,61 +308,73 @@ Login()async{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Form(child:Container(
+            Form(child: Container(
               key: formState,
-              child:Column(
-                children:<Widget>[
-            TextFormField(
-             decoration: InputDecoration(
-                 icon: Icon(Icons.email,color: Colors.indigo,),hintText: 'Email'),
-              validator:(val){
-                if(val.isEmpty){
-                  return'Enter Your Email';
-                }
-                else if(val.length<5){
-                  return 'error';
-                }
-                else
-                  return null;
-              },
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                        icon: Icon(Icons.email, color: Colors.indigo,),
+                        hintText: 'Email'),
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return 'Enter Your Email';
+                      }
+                      else if (val.length < 5) {
+                        return 'error';
+                      }
+                      else
+                        return null;
+                    },
 
-              onSaved: (val){
-                _email=val;
-              },
-               ),
+                    onSaved: (val) {
+                      _email = val;
+                    },
+                  ),
 
-            // sizedBox it give space between more widget
-            SizedBox(
-              height: 15.0,
-            ),
+                  // sizedBox it give space between more widget
+                  SizedBox(
+                    height: 15.0,
+                  ),
 
                   TextFormField(
                     obscureText: true,
                     decoration: InputDecoration(
-                        icon: Icon(Icons.lock,color: Colors.indigo,),hintText: 'Password'),
-                   // controller: _passWordController,
-                    validator:(val){
-                          if(val.isEmpty){
-                            return'Enter Your Password';
-                          }
-                          else if(val.length<5){
-                            return 'error';
-                          }
-                          else
-                            return null;
+                        icon: Icon(Icons.lock, color: Colors.indigo,),
+                        hintText: 'Password'),
+                    // controller: _passWordController,
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return 'Enter Your Password';
+                      }
+                      else if (val.length < 5) {
+                        return 'error';
+                      }
+                      else
+                        return null;
                     },
 
-                    onSaved: (val){
-                      _password=val;
+                    onSaved: (val) {
+                      _password = val;
                     },
                   ),
-            SizedBox(
-              height: 60.0,
-            ),
-            MaterialButton(
-              child: Text('Login', style: TextStyle(color: Colors.white)),
-              color: Colors.indigo,
-              onPressed: () {
+                  SizedBox(
+                    height: 60.0,
+                  ),
+                  MaterialButton(
+                    child: Text('Login', style: TextStyle(color: Colors.white)),
+                    color: Colors.indigo,
+                    onPressed: () {
+                Navigator.of(context).pushNamed('/homepage');
+                FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: _email, password: _password).then((signedUser){
+                  UserToDatabase().addNewUser(signedUser, context);
+                }).catchError((e){
+                  print(e);
+                });
+                      Login();
+                    },
+//                    onPressed: () {
 //                Navigator.of(context).pushNamed('/homepage');
 //                FirebaseAuth.instance.createUserWithEmailAndPassword(
 //                    email: _emailController.text, password: _passWordController.text).then((signedUser){
@@ -366,16 +382,16 @@ Login()async{
 //                }).catchError((e){
 //                  print(e);
 //                });
-              Login();
-              },
+//                      Login();
+//                    },
 
-            ),
-            Padding(padding:EdgeInsets.only(bottom: 25.0) ),
-            _signInButton(),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 25.0)),
+                   _signInButton(),
                 ],
               ),
             ),
-    ),
+            ),
           ],
         ),
       ),

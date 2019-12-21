@@ -36,19 +36,19 @@ class _RootPageState extends State<RootPage> {
       });
     });
   }
-
-  void _onLoggedIn() {
-    widget.auth.getCurrentUser().then((user){
-      setState(() {
-        _userId = user.uid.toString();
-      });
-    });
-    setState(() {
-      authStatus = AuthStatus.LOGGED_IN;
-
-    });
-  }
-
+//
+//  void _onLoggedIn() {
+//    widget.auth.getCurrentUser().then((user){
+//      setState(() {
+//        _userId = user.uid.toString();
+//      });
+//    });
+//    setState(() {
+//      authStatus = AuthStatus.LOGGED_IN;
+//
+//    });
+//  }
+//
 //  void _onSignedOut() {
 //    setState(() {
 //      authStatus = AuthStatus.NOT_LOGGED_IN;
@@ -80,9 +80,9 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
           return new Homepage(
-          //  userId: _userId,
-           // auth: widget.auth,
-           // onSignedOut: _onSignedOut,
+//            userId: _userId,
+//            auth: widget.auth,
+//            onSignedOut: _onSignedOut,
           );
         } else return _buildWaitingScreen();
         break;
