@@ -7,51 +7,43 @@ class MySlider extends StatelessWidget {
   //making list of pages needed to pass in IntroViewsFlutter constructor.
   final pages = [
     PageViewModel(
-        pageColor: const Color(0xFF03A9F4),
-        // iconImageAssetPath: 'assets/air-hostess.png',
-        bubble: Image.asset(''),
+        pageColor: Colors.white,
         body: Text(
-          'Mobile Managment System For Attendent Student ',
+          'Mobile Managment System For Attendent Student ',style: TextStyle(color: Colors.indigo),
         ),
         title: Text(
-          'MMSFAS',
+          'MMSFAS',style: TextStyle(color: Colors.indigo),
         ),
-        textStyle: TextStyle(fontFamily: 'MyFont', color: Colors.white),
-        mainImage: Image.asset(
-          '',
+        mainImage: Image.asset('assets/ar-icons-school.png',
           height: 285.0,
           width: 285.0,
           alignment: Alignment.center,
         )),
     PageViewModel(
-      pageColor: const Color(0xFF8BC34A),
-      iconImageAssetPath: '',
+      pageColor: Colors.white,
       body: Text(
-        'We  work  for  the  comfort ,  enjoy  your  stay  at  our  beautiful  hotels',
+        'Login With Your University Email ',style: TextStyle(color: Colors.indigo),
       ),
-      title: Text('Hotels'),
+      title: Text('Step 1',style: TextStyle(color: Colors.indigo),),
       mainImage: Image.asset(
-        '',
+        'assets/icon.png',
         height: 285.0,
         width: 285.0,
         alignment: Alignment.center,
       ),
-      textStyle: TextStyle(fontFamily: 'MyFont', color: Colors.white),
     ),
     PageViewModel(
-      pageColor: const Color(0xFF607D8B),
-      iconImageAssetPath: '',
+      pageColor: Colors.white,
       body: Text(
-        'Easy  cab  booking  at  your  doorstep  with  cashless  payment  system',
+        'Add your classes',style: TextStyle(color: Colors.indigo),
       ),
-      title: Text('Cabs'),
+      title: Text('Step 2',style: TextStyle(color: Colors.indigo),),
       mainImage: Image.asset(
-        '',
+        'assets/icon.png',
         height: 285.0,
         width: 285.0,
         alignment: Alignment.center,
       ),
-      textStyle: TextStyle(fontFamily: 'MyFont', color: Colors.white),
     ),
   ];
 
@@ -75,7 +67,7 @@ class MySlider extends StatelessWidget {
             );
           },
           pageButtonTextStyles: TextStyle(
-            color: Colors.white,
+            color: Colors.indigo,
             fontSize: 18.0,
           ),
         ), //IntroViewsFlutter
@@ -83,19 +75,3 @@ class MySlider extends StatelessWidget {
     ); //Material App
   }
 }
-//
-///// Home Page of our example app.
-//
-//class HomePage extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      appBar: AppBar(
-//        title: Text('Home'),
-//      ), //Appbar
-//      body: Center(
-//        child: Text("This is the home page of the app"),
-//      ), //Center
-//    ); //Scaffold
-//  }
-//}

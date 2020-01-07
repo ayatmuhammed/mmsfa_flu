@@ -1,11 +1,16 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 class AppImagePicker extends StatelessWidget {
   final double maxImageWidth;
   final double maxImageHeight;
   final Function(File) onImageSelected;
+
 
   const AppImagePicker(
       {Key key,

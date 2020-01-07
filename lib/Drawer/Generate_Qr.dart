@@ -12,14 +12,6 @@ class GenerateQr extends StatefulWidget {
 }
 
 class _GenerateQrState extends State<GenerateQr> {
-//
-//  Future<File> imageFile;
-//  pickImageFromGallery(ImageSource source)
-//  {
-//    setState(() {
-//      imageFile = ImagePicker.pickImage(source: source);
-//    });
-//  }
   Uint8List bytes = Uint8List(0);
   TextEditingController _inputController;
   TextEditingController _outputController;
@@ -35,6 +27,15 @@ class _GenerateQrState extends State<GenerateQr> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          leading:new IconButton(
+            icon: new Icon(Icons.arrow_back, color: Colors.indigo),
+            onPressed: () => Navigator.of(context).pop('/homepage'),
+          ),
+          backgroundColor: Colors.white,
+          title: Text('Qr Generator',style: TextStyle(color: Colors.indigo),
+          ),
+        ),
         backgroundColor: Colors.grey[300],
         body: Builder(
           builder: (BuildContext context) {
@@ -119,7 +120,6 @@ class _GenerateQrState extends State<GenerateQr> {
                             onTap: () => this.setState(() => this.bytes = Uint8List(0)),
                           ),
                         ),
-                        //  Text('|', style: TextStyle(fontSize: 15, color: Colors.black26)),
                         Expanded(
                           flex: 5,
                           child: GestureDetector(
@@ -168,28 +168,11 @@ class _GenerateQrState extends State<GenerateQr> {
               child: Text('Generate',style: TextStyle(color: Colors.red),),
             ),
           ),
-//
-//          Expanded(
-//            flex: 5,
-//            child:  GestureDetector(
-//              onTap: (){
-//                pickImageFromGallery(ImageSource.gallery);
-//                //_scanPhoto;
-//              },
-//              child: Text('Gelllary'),
-//            ),
-//          ),
 
         ],
       ),
     );
   }
-//
-//
-//  Future _scanPhoto() async {
-//    String barcode = await scanner.scanPhoto();
-//    this._outputController.text = barcode;
-//  }
 
 
   Future _generateBarCode(String inputCode) async {

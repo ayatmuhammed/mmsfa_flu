@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Future<bool>_exitApp(BuildContext context) {
+Future<bool>exitApp(BuildContext context) {
   return showDialog(
     context: context,
     child: AlertDialog(

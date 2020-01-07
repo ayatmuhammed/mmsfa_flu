@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mmsfa_flu/loginpages/signin.dart';
 import 'package:mmsfa_flu/splshscreen/loader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Drawer/DrawerPages.dart';
 import 'mainpages/ui/home_page.dart';
 bool firstRun;
 const firstRunKey= 'firstRun';
@@ -43,8 +42,7 @@ future: firstPage(),
 
   Future<Widget> firstPage() async {
     if(firstRun){
-      return  Homepage();
-        //SplashScreen();
+      return SplashScreen();
     }
 
     var user =  await FirebaseAuth.instance.currentUser();

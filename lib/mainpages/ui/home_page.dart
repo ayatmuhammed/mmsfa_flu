@@ -4,15 +4,12 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mmsfa_flu/Drawer/DrawerPages.dart';
+import 'package:mmsfa_flu/Drawer/Generate_Qr.dart';
+import 'package:mmsfa_flu/Drawer/Log_Out.dart';
 import 'package:mmsfa_flu/mainpages/model/class.dart';
 import 'package:mmsfa_flu/mainpages/ui/ClassinfoUpdate.dart';
 import 'package:mmsfa_flu/student_pages/listviewstudent.dart';
-import 'package:mmsfa_flu/Profile_teacture/Photo_profile';
-
-
 class Homepage extends StatefulWidget {
 
 const  Homepage(
@@ -30,9 +27,10 @@ final FirebaseUser user;
 final todoReference = FirebaseDatabase.instance.reference().child('todo');
 
 class _HomepageState extends State<Homepage> {
-
-
+  final String title = "Flutter Pick Image demo";
   Future<File> imageFile;
+
+  
   pickImageFromGallery(ImageSource source)
   {
     setState(() {
@@ -67,6 +65,8 @@ class _HomepageState extends State<Homepage> {
     _onnClassesChangedSubscription.cancel();
   }
 
+
+
 //now i design the ui to the user
   @override
   Widget build(BuildContext context) {
@@ -85,23 +85,14 @@ class _HomepageState extends State<Homepage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+
                         CircleAvatar(
                           backgroundColor: Colors.indigo[100],
                           radius: 50.0,
-                          child:
-                          AppImagePicker(),
-//                          profilePic(),
+//                          child:
+//                          AppImagePicker(),
+
                         ),
-//
-//                        IconButton(
-//                          icon: Icon(
-//                            Icons.add_a_photo,
-//                          ),
-//                          onPressed: () {
-//                           // _getImage(ImageSource);
-//                           // pickImageFromGallery(ImageSource.gallery);
-//                          },
-//                        ),
 
                       ],
                     ),
@@ -124,7 +115,7 @@ class _HomepageState extends State<Homepage> {
               ListTile(
                 title: Text('Logout',style: TextStyle(color: Colors.indigo),),
                 onTap: () {
-                  _exitApp(context);
+                 exitApp(context);
                 },
               ),
             ],
@@ -280,33 +271,8 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
     );
+
   }
+
 }
 
-
-
-
-Future<bool>_exitApp(BuildContext context) {
-  return showDialog(
-    context: context,
-    child: AlertDialog(
-      title: Text('Do you want to exit this application?'),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () {
-            print("you choose no");
-            Navigator.of(context).pop(false);
-          },
-          child: Text('No'),
-        ),
-        FlatButton(
-          onPressed: () {
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          },
-          child: Text('Yes'),
-        ),
-      ],
-    ),
-  ) ??
-      false;
-}
