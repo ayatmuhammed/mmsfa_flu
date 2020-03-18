@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mmsfa_flu/Slider_pages/IntroSliderPage.dart';
-
-
+import 'package:mmsfa_flu/Onboardering_tech/IntroSliderPage.dart';
 class SplashScreen extends StatefulWidget {
 
   @override
@@ -20,16 +18,10 @@ class _SplashScreenState extends State<SplashScreen>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       home: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: SpinKitPouringHourglass(
-            color: Colors.indigo,
-            size: 80.0,
-            duration: duration ,
-
-          ),
+          child: SpinKitWave(color: Colors.white, type: SpinKitWaveType.center)
 
         ),
 
