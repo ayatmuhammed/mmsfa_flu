@@ -176,17 +176,52 @@ class _GenerateQrState extends State<GenerateQr> {
 
 
   Future _generateBarCode(String inputCode) async {
-    Uint8List result = await scanner.generateBarCode(inputCode);
+    // get the the information we need inside bar code
+    // convert to json
+    Lecture fakeLecture= new Lecture("5b", "5", "4", "10:30", DateTime.sunday);
+
+    
+    Uint8List result = await scanner.generateBarCode(fakeLecture.toJson());
     this.setState(() => this.bytes = result);
   }
 
 }
 
 
+class Lecture{
+  String lectureId;
+  String stageId;
+  String branchId;
+  String time; // TODO : improve type
+  int day;
+
+  Lecture(this.lectureId, this.stageId, this.branchId, this.time,
+      this.day);
+
+  toJson() {
+    return {
+      "lectureId": lectureId,
+      "stageId": stageId,
+      " branchId":  branchId,
+      "time" : time,
+      "day" : day
+    };
+  }
+
+  fromSnapShot(Map<String, dynamic> map){
+    lectureId=map['lectureId'];
+    stageId=map['stageId'];
+    branchId=map['branchId'];
+    time=map['time'];
+    day=map['day'];
+
+  }
+}
 
 
 
-
+List stages= ["One", "Two", "Three", "Four"];
+List branches= ["Sw", "Ai", "Network", "Security"];
 
 
 
