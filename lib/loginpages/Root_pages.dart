@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mmsfa_flu/loginpages/signin.dart';
-import 'package:mmsfa_flu/mainpages/ui/home_page.dart';
+import 'package:mmsfa_flu/Main_Tech/ui/home_page.dart';
 
 import 'Auth.dart';
 

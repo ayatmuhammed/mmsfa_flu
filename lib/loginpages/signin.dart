@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mmsfa_flu/utils/usertodatabase.dart';
-import '../mainpages/ui/home_page.dart';
+import '../Main_Tech/ui/home_page.dart';
 import 'Auth.dart';
 import 'DataBofLogin.dart';
 
@@ -284,8 +284,8 @@ class _LoginSignInPageState extends State< LoginSignInPage> {
     if (formData.validate()) {
       formData.save();
       try {
-        FirebaseUser fireuser = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password);
+        FirebaseUser fireuser = (await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password)).user;
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => Homepage(user: fireuser)));
         print(fireuser.email);
