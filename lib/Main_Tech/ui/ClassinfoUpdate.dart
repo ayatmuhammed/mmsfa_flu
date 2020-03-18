@@ -1,7 +1,7 @@
 //here i show the information of student in update case
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/mainpages/model/class.dart';
+import 'package:mmsfa_flu/Main_Tech/model/class.dart';
 
 // here i will translate the information from listView_student to the student_screen
 //so i use the constructor

@@ -5,10 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mmsfa_flu/Drawer/Generate_Qr.dart';
-import 'package:mmsfa_flu/Drawer/Log_Out.dart';
-import 'package:mmsfa_flu/mainpages/model/class.dart';
-import 'package:mmsfa_flu/mainpages/ui/ClassinfoUpdate.dart';
+import 'package:mmsfa_flu/Drawer_Tech/Generate_Qr.dart';
+import 'package:mmsfa_flu/Drawer_Tech/Log_Out.dart';
+import 'package:mmsfa_flu/Main_Tech/model/class.dart';
+import 'package:mmsfa_flu/Main_Tech/ui/ClassinfoUpdate.dart';
 import 'package:mmsfa_flu/student_pages/listviewstudent.dart';
 class Homepage extends StatefulWidget {
 
@@ -66,10 +66,18 @@ class _HomepageState extends State<Homepage> {
   }
 
 
-
+  File galleryFile;
 //now i design the ui to the user
   @override
   Widget build(BuildContext context) {
+    imageSelectorGallery() async {
+      galleryFile = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      print("You selected gallery image : " + galleryFile.path);
+      setState(() {});
+    }
     return MaterialApp(
       title: 'Student DB',
       home: Scaffold(
@@ -85,16 +93,22 @@ class _HomepageState extends State<Homepage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-
                         CircleAvatar(
                           backgroundColor: Colors.indigo[100],
                           radius: 50.0,
-//                          child:
-//                          AppImagePicker(),
+                          child:  RaisedButton(
+                            child: Text("+"),
+                            onPressed: () {
+                            //  pickImageFromGallery(ImageSource.gallery);
+                              imageSelectorGallery();
 
+                            },
+
+                          ),
+                          
                         ),
 
-                      ],
+                     ],
                     ),
                   ),
                 decoration: BoxDecoration(
@@ -273,6 +287,8 @@ class _HomepageState extends State<Homepage> {
     );
 
   }
-
 }
+
+
+
 
