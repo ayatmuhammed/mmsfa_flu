@@ -1,7 +1,7 @@
 //her i show all student that i will added it
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/mainpages/model/class.dart';
+import 'package:mmsfa_flu/Main_Tech/model/class.dart';
 import 'package:mmsfa_flu/student_pages/Student.dart';
 import 'package:mmsfa_flu/student_pages/studentInfoupdate.dart';
 import 'package:mmsfa_flu/student_pages/studentInfoView.dart';
