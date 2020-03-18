@@ -18,13 +18,15 @@ class MySlider extends StatelessWidget {
           height: 285.0,
           width: 285.0,
           alignment: Alignment.center,
-        )),
+        ),
+    ),
     PageViewModel(
       pageColor: Colors.white,
       body: Text(
         'Login With Your University Email ',style: TextStyle(color: Colors.indigo),
       ),
-      title: Text('Step 1',style: TextStyle(color: Colors.indigo),),
+      title: Text('Step 1',style: TextStyle(color: Colors.indigo),
+      ),
       mainImage: Image.asset(
         'assets/icon.png',
         height: 285.0,
@@ -50,11 +52,6 @@ class MySlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'IntroViews Flutter', //title of app
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ), //ThemeData
       home: Builder(
         builder: (context) => IntroViewsFlutter(
           pages,
@@ -63,15 +60,16 @@ class MySlider extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => LoginSignInPage(),
-              ), //MaterialPageRoute
+              ),
             );
           },
           pageButtonTextStyles: TextStyle(
             color: Colors.indigo,
             fontSize: 18.0,
           ),
-        ), //IntroViewsFlutter
-      ), //Builder
-    ); //Material App
+
+        ),
+      ),
+    );
   }
 }
