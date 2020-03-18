@@ -4,13 +4,17 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mmsfa_flu/loginpages/signin.dart';
 import 'package:mmsfa_flu/splshscreen/loader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'mainpages/ui/home_page.dart';
-bool firstRun;
+import 'Main_Tech/ui/home_page.dart';
+bool firstRun=true;
 const firstRunKey= 'firstRun';
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   SharedPreferences ref= await SharedPreferences.getInstance();
   firstRun=ref.getBool(firstRunKey)?? true;
   ref.setBool(firstRunKey, false);
+
+
   runApp(MyApp());
 }
 
@@ -29,8 +33,8 @@ future: firstPage(),
     },
         ),
 
-        //firstRun? SplashScreen():
-      //  LoginSignInPage(),
+//      firstRun? SplashScreen():
+//      LoginSignInPage(),
        routes: <String ,WidgetBuilder>{
         '/landingpage':(BuildContext context)=> MyApp(),
         '/register':(BuildContext context)=> LoginSignInPage(),
@@ -42,7 +46,9 @@ future: firstPage(),
 
   Future<Widget> firstPage() async {
     if(firstRun){
-      return SplashScreen();
+      return
+
+        SplashScreen();
     }
 
     var user =  await FirebaseAuth.instance.currentUser();
