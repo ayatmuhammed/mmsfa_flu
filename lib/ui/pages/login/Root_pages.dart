@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mmsfa_flu/loginpages/signin.dart';
-import 'package:mmsfa_flu/Main_Tech/ui/home_page.dart';
+import 'package:mmsfa_flu/ui/pages/login/Login.dart';
+import 'package:mmsfa_flu/ui/pages/Classes.dart';
 
-import 'Auth.dart';
+import 'package:mmsfa_flu/database/controller/Auth.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -79,7 +79,7 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new Homepage(
+          return new Classes(
 //            userId: _userId,
 //            auth: widget.auth,
 //            onSignedOut: _onSignedOut,

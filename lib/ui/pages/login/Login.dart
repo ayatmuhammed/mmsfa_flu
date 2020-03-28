@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mmsfa_flu/utils/usertodatabase.dart';
-import '../Main_Tech/ui/home_page.dart';
-import 'Auth.dart';
-import 'DataBofLogin.dart';
+import '../Classes.dart';
+import 'package:mmsfa_flu/database/controller/Auth.dart';
+import 'package:mmsfa_flu/database/controller/DataBofLogin.dart';
 
 
-class LoginSignUpPage extends StatefulWidget {
-  LoginSignUpPage({this.auth, this.onSignedIn});
+class Login extends StatefulWidget {
+  Login({this.auth, this.onSignedIn});
 
   final BaseAuth auth;
   final VoidCallback onSignedIn;
 
   @override
-  State<StatefulWidget> createState() => new _LoginSignUpPageState();
+  State<StatefulWidget> createState() => new _LoginState();
 }
 
 enum FormMode { LOGIN, SIGNUP }
 
-class _LoginSignUpPageState extends State<LoginSignUpPage> {
+class _LoginState extends State<Login> {
   final _formKey = new GlobalKey<FormState>();
 
   String _email;
@@ -287,7 +287,7 @@ class _LoginSignInPageState extends State< LoginSignInPage> {
         FirebaseUser fireuser = (await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email, password: _password)).user;
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => Homepage(user: fireuser)));
+            MaterialPageRoute(builder: (context) => Classes(user: fireuser)));
         print(fireuser.email);
       }
       catch (error) {
@@ -406,7 +406,7 @@ class _LoginSignInPageState extends State< LoginSignInPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return Homepage();
+                return Classes();
               },
             ),
           );

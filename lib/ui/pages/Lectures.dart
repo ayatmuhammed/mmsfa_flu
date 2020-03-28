@@ -1,17 +1,18 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/Drawer_Stu/Drawer_comp.dart';
-import 'package:mmsfa_flu/Qr_Scan_Stu/BarCode.dart';
-import 'classes.dart';
-class Homepage extends StatefulWidget {
+import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
+import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
+import 'package:mmsfa_flu/database/model/classes.dart';
+class Lectures extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _LecturesState createState() => _LecturesState();
 }
 
 final todoReference=FirebaseDatabase.instance.reference().child('todo');
 
-class _HomepageState extends State<Homepage> {
+class _LecturesState extends State<Lectures> {
   Drawer drawer = new Drawer();
 
   //the user that i takes it from database i put them in list
@@ -78,7 +79,8 @@ class _HomepageState extends State<Homepage> {
                             title: Text(
                               '${classes[posi].lecture}',
                               style: TextStyle(color: Colors.indigo,
-                                backgroundColor: Colors.purple[50],
+
+                               backgroundColor: Colors.purple[50],
                                 fontSize: 22.0,
                               ),
                             ),
@@ -103,20 +105,18 @@ class _HomepageState extends State<Homepage> {
                                   ),
                                 ),
 
-
                               ],
-
                             ),
-                            onTap: () =>
-                                Navigator.push(
-                                  context, MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          //QrScan(),
-                                    ScanScreen(),
-                                ),
-                                ),
-
+                            onTap: () {
+                              Navigator.push(
+                                context, MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                //QrScan(),
+                                ScanScreen(),
+                              ),
+                              );
+                            }
                           ),
                         ),
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mmsfa_flu/Onboardering_tech/IntroSliderPage.dart';
+import 'package:mmsfa_flu/ui/pages/IntroSlider.dart';
 class SplashScreen extends StatefulWidget {
 
   @override
@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen>{
   @override
   void initState() {
     super.initState();
-    Timer(duration, ()=> Navigator.push(context, MaterialPageRoute(builder :(context)=> MySlider())));
+    Timer(duration, ()=> Navigator.push(context, MaterialPageRoute(builder :(context)=> IntroSlider())));
   }
   @override
   Widget build(BuildContext context) {

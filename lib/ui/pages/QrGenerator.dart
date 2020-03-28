@@ -6,12 +6,12 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 
-class GenerateQr extends StatefulWidget {
+class QrGenerator extends StatefulWidget {
   @override
-  _GenerateQrState createState() => _GenerateQrState();
+  _QrGeneratorState createState() => _QrGeneratorState();
 }
 
-class _GenerateQrState extends State<GenerateQr> {
+class _QrGeneratorState extends State<QrGenerator> {
   Uint8List bytes = Uint8List(0);
   TextEditingController _inputController;
   TextEditingController _outputController;

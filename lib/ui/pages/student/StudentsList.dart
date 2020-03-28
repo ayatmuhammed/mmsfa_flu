@@ -1,23 +1,23 @@
 //her i show all student that i will added it
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/Main_Tech/model/class.dart';
-import 'package:mmsfa_flu/student_pages/Student.dart';
-import 'package:mmsfa_flu/student_pages/studentInfoupdate.dart';
-import 'package:mmsfa_flu/student_pages/studentInfoView.dart';
+import 'package:mmsfa_flu/database/model/class.dart';
+import 'package:mmsfa_flu/database/model/Student.dart';
+import 'package:mmsfa_flu/ui/pages/student/AddStudentInformation.dart';
+import 'package:mmsfa_flu/ui/pages/student/StudentInformation.dart';
 
-class ListViewStudent extends StatefulWidget {
+class StudentsList extends StatefulWidget {
   final Todo myClass;
 
-  const ListViewStudent(this.myClass);
+  const StudentsList(this.myClass);
 
   @override
-  _ListViewStudentState createState() => _ListViewStudentState();
+  _StudentsListState createState() => _StudentsListState();
 }
 
 final studentReference = FirebaseDatabase.instance.reference().child('student');
 
-class _ListViewStudentState extends State<ListViewStudent> {
+class _StudentsListState extends State<StudentsList> {
   //the user that i takes it from database i put them in list
   List<Student> items;
   // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
@@ -184,7 +184,7 @@ class _ListViewStudentState extends State<ListViewStudent> {
   void _navigateStudent(BuildContext context, Student student) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => StudentScreen(student)),
+      MaterialPageRoute(builder: (context) => AddStudentInformation(student)),
     );
   }
 
@@ -201,7 +201,7 @@ class _ListViewStudentState extends State<ListViewStudent> {
     String studentKey= await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => StudentScreen(
+        builder: (context) => AddStudentInformation(
           Student(null, '', '', '', '', ''),
         ),
       ),

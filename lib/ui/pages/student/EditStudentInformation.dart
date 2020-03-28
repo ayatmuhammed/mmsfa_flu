@@ -1,23 +1,23 @@
 //here i show the information of student in update case
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/Main_Tech/model/class.dart';
+import 'package:mmsfa_flu/database/model/class.dart';
 
 // here i will translate the information from listView_student to the student_screen
 //so i use the constructor
 
-class InformationScreen extends StatefulWidget {
+class EditStudentInformation extends StatefulWidget {
   final Todo todo;
-  InformationScreen(this.todo);
+  EditStudentInformation(this.todo);
   @override
-  _InformationScreenState createState() => _InformationScreenState();
+  _EditStudentInformationState createState() => _EditStudentInformationState();
 }
 
 
 final studentReference=FirebaseDatabase.instance.reference().child('todo');
 
 
-class _InformationScreenState extends State<InformationScreen> {
+class _EditStudentInformationState extends State<EditStudentInformation> {
   //user input the data so we need to controller
   TextEditingController _lectureController;
   TextEditingController _departmentController;

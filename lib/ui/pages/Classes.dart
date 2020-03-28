@@ -5,14 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mmsfa_flu/Drawer_Tech/Generate_Qr.dart';
-import 'package:mmsfa_flu/Drawer_Tech/Log_Out.dart';
-import 'package:mmsfa_flu/Main_Tech/model/class.dart';
-import 'package:mmsfa_flu/Main_Tech/ui/ClassinfoUpdate.dart';
-import 'package:mmsfa_flu/student_pages/listviewstudent.dart';
-class Homepage extends StatefulWidget {
+import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
+import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
+import 'package:mmsfa_flu/ui/widgets/logoutDialog.dart';
+import 'package:mmsfa_flu/database/model/class.dart';
+import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
+import 'package:mmsfa_flu/ui/pages/student/StudentsList.dart';
+class Classes extends StatefulWidget {
 
-const  Homepage(
+const  Classes(
 {Key key,
   this.user,
 }):super(key:key);
@@ -21,12 +22,12 @@ final FirebaseUser user;
 //Homepage() : super();
  final String title = "Pick Image";
   @override
-  _HomepageState createState() => _HomepageState();
+  _ClassesState createState() => _ClassesState();
 }
 
 final todoReference = FirebaseDatabase.instance.reference().child('todo');
 
-class _HomepageState extends State<Homepage> {
+class _ClassesState extends State<Classes> {
   final String title = "Flutter Pick Image demo";
   Future<File> imageFile;
 
@@ -81,60 +82,61 @@ class _HomepageState extends State<Homepage> {
     return MaterialApp(
       title: 'Student DB',
       home: Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.all(1.0),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: DrawerHeader(
-                  child: Padding(
-                    padding: const EdgeInsets.all( 1.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: Colors.indigo[100],
-                          radius: 50.0,
-                          child:  RaisedButton(
-                            child: Text("+"),
-                            onPressed: () {
-                            //  pickImageFromGallery(ImageSource.gallery);
-                              imageSelectorGallery();
-
-                            },
-
-                          ),
-                          
-                        ),
-
-                     ],
-                    ),
-                  ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-               ),
-
-                ),
-              ),
-
-              ListTile(
-                title: Text('Generate Qr',style: TextStyle(color: Colors.indigo),),
-                onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) =>  GenerateQr()));
-
-                },
-              ),
-              ListTile(
-                title: Text('Logout',style: TextStyle(color: Colors.indigo),),
-                onTap: () {
-                 exitApp(context);
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer:DrawerComp(),
+//        drawer: Drawer(
+//          child: ListView(
+//            padding: EdgeInsets.all(1.0),
+//            children: <Widget>[
+//              Padding(
+//                padding: const EdgeInsets.all(1.0),
+//                child: DrawerHeader(
+//                  child: Padding(
+//                    padding: const EdgeInsets.all( 1.0),
+//                    child: Column(
+//                      mainAxisAlignment: MainAxisAlignment.center,
+//                      children: <Widget>[
+//                        CircleAvatar(
+//                          backgroundColor: Colors.indigo[100],
+//                          radius: 50.0,
+//                          child:  RaisedButton(
+//                            child: Text("+"),
+//                            onPressed: () {
+//                            //  pickImageFromGallery(ImageSource.gallery);
+//                              imageSelectorGallery();
+//
+//                            },
+//
+//                          ),
+//
+//                        ),
+//
+//                     ],
+//                    ),
+//                  ),
+//                decoration: BoxDecoration(
+//                  color: Colors.white,
+//               ),
+//
+//                ),
+//              ),
+//
+//              ListTile(
+//                title: Text('Generate Qr',style: TextStyle(color: Colors.indigo),),
+//                onTap: () {
+//                  Navigator.pushReplacement(context,
+//                      MaterialPageRoute(builder: (context) =>  QrGenerator()));
+//
+//                },
+//              ),
+//              ListTile(
+//                title: Text('Logout',style: TextStyle(color: Colors.indigo),),
+//                onTap: () {
+//                 exitApp(context);
+//                },
+//              ),
+//            ],
+//          ),
+//        ),
         drawerScrimColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.indigo,
@@ -262,7 +264,7 @@ class _HomepageState extends State<Homepage> {
   void _navigateClass(BuildContext context, Todo todo) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => InformationScreen(todo)),
+      MaterialPageRoute(builder: (context) => EditStudentInformation(todo)),
     );
   }
 
@@ -270,7 +272,7 @@ class _HomepageState extends State<Homepage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ListViewStudent(todo),
+        builder: (context) => StudentsList(todo),
       ),
     );
   }
@@ -280,7 +282,7 @@ class _HomepageState extends State<Homepage> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => InformationScreen(
+        builder: (context) => EditStudentInformation(
           Todo(null, '', '', ''),
         ),
       ),
