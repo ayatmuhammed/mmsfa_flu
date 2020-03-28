@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mmsfa_flu/loginpages/signin.dart';
-import 'package:mmsfa_flu/splshscreen/loader.dart';
+import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
+import 'package:mmsfa_flu/ui/pages/Lectures.dart';
+import 'package:mmsfa_flu/ui/pages/login/Login.dart';
+import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Main_Tech/ui/home_page.dart';
+import 'ui/pages/Classes.dart';
 bool firstRun=true;
 const firstRunKey= 'firstRun';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   SharedPreferences ref= await SharedPreferences.getInstance();
   firstRun=ref.getBool(firstRunKey)?? true;
   ref.setBool(firstRunKey, false);
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home:FutureBuilder<Widget>(
-future: firstPage(),
+      home:FutureBuilder<Widget>(
+    future: firstPage(),
     builder:
     (BuildContext context, AsyncSnapshot snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -38,7 +39,7 @@ future: firstPage(),
        routes: <String ,WidgetBuilder>{
         '/landingpage':(BuildContext context)=> MyApp(),
         '/register':(BuildContext context)=> LoginSignInPage(),
-         '/homepage':(BuildContext context)=> Homepage(),
+         '/homepage':(BuildContext context)=> Classes(),
         },
       theme: ThemeData(primaryColor: Colors.indigo),
     );
@@ -46,9 +47,8 @@ future: firstPage(),
 
   Future<Widget> firstPage() async {
     if(firstRun){
-      return
-
-        SplashScreen();
+      return Classes();
+      //SplashScreen();
     }
 
     var user =  await FirebaseAuth.instance.currentUser();
@@ -56,7 +56,7 @@ future: firstPage(),
       return LoginSignInPage();
     }
 
-    return Homepage();
+    return Classes();
   }
 }
 
