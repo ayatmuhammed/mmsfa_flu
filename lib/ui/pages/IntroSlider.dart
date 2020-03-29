@@ -144,7 +144,6 @@ class IntroSlider extends StatelessWidget {
 
   Future<bool> isStudent() async {
    final user= await FirebaseAuth.instance.currentUser();
-
    if(user == null){
      // goto login
    }else{
