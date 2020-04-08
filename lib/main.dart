@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mmsfa_flu/database/controller/Auth.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/Lectures.dart';
-import 'package:mmsfa_flu/ui/pages/login/Login.dart';
+import 'package:mmsfa_flu/ui/pages/login/LoginٍSignInPage.dart';
 import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
+import 'package:mmsfa_flu/ui/pages/login/Root_pages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ui/pages/Classes.dart';
 bool firstRun=true;
@@ -48,15 +50,13 @@ class MyApp extends StatelessWidget {
   Future<Widget> firstPage() async {
     if(firstRun){
       return Classes();
-      //SplashScreen();
+        //SplashScreen();
     }
 
-    var user =  await FirebaseAuth.instance.currentUser();
-    if(user == null){
-      return LoginSignInPage();
-    }
 
-    return Classes();
+    return RootPage(
+        auth: Auth()
+    );
   }
 }
 

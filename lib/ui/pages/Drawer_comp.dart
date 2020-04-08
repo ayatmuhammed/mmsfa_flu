@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
+import 'package:mmsfa_flu/ui/pages/login/Login%D9%8DSignInPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class DrawerComp extends StatefulWidget {
   @override
   _DrawerCompState createState() => _DrawerCompState();
@@ -12,7 +14,6 @@ class _DrawerCompState extends State<DrawerComp> {
 
     return Drawer(
       child: Container(
-        color: Colors.purple[50],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -56,13 +57,18 @@ class _DrawerCompState extends State<DrawerComp> {
             ),
 
             FlatButton(
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                   // builder: (context) =>,
-                  ),
-                );
+              onPressed: () async {SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.remove('userPreference');
+              await Future.delayed(Duration(seconds: 2));
+
+              Navigator.of(context).pushAndRemoveUntil(
+                // the new route
+                MaterialPageRoute(
+                  builder: (BuildContext context) => LoginSignInPage(),
+                ),
+
+                    (Route route) => false,
+              );
               },
               child: Text('-Logout',style: TextStyle(
                   fontSize: 12.0,

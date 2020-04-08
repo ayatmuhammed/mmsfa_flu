@@ -7,7 +7,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
-import 'package:mmsfa_flu/ui/widgets/logoutDialog.dart';
 import 'package:mmsfa_flu/database/model/class.dart';
 import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
 import 'package:mmsfa_flu/ui/pages/student/StudentsList.dart';
@@ -17,9 +16,7 @@ const  Classes(
 {Key key,
   this.user,
 }):super(key:key);
-
 final FirebaseUser user;
-//Homepage() : super();
  final String title = "Pick Image";
   @override
   _ClassesState createState() => _ClassesState();
@@ -83,60 +80,6 @@ class _ClassesState extends State<Classes> {
       title: 'Student DB',
       home: Scaffold(
         drawer:DrawerComp(),
-//        drawer: Drawer(
-//          child: ListView(
-//            padding: EdgeInsets.all(1.0),
-//            children: <Widget>[
-//              Padding(
-//                padding: const EdgeInsets.all(1.0),
-//                child: DrawerHeader(
-//                  child: Padding(
-//                    padding: const EdgeInsets.all( 1.0),
-//                    child: Column(
-//                      mainAxisAlignment: MainAxisAlignment.center,
-//                      children: <Widget>[
-//                        CircleAvatar(
-//                          backgroundColor: Colors.indigo[100],
-//                          radius: 50.0,
-//                          child:  RaisedButton(
-//                            child: Text("+"),
-//                            onPressed: () {
-//                            //  pickImageFromGallery(ImageSource.gallery);
-//                              imageSelectorGallery();
-//
-//                            },
-//
-//                          ),
-//
-//                        ),
-//
-//                     ],
-//                    ),
-//                  ),
-//                decoration: BoxDecoration(
-//                  color: Colors.white,
-//               ),
-//
-//                ),
-//              ),
-//
-//              ListTile(
-//                title: Text('Generate Qr',style: TextStyle(color: Colors.indigo),),
-//                onTap: () {
-//                  Navigator.pushReplacement(context,
-//                      MaterialPageRoute(builder: (context) =>  QrGenerator()));
-//
-//                },
-//              ),
-//              ListTile(
-//                title: Text('Logout',style: TextStyle(color: Colors.indigo),),
-//                onTap: () {
-//                 exitApp(context);
-//                },
-//              ),
-//            ],
-//          ),
-//        ),
         drawerScrimColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.indigo,
@@ -154,7 +97,7 @@ class _ClassesState extends State<Classes> {
               return Card(
                 margin: EdgeInsets.only(
                     top: 9.0, bottom: 9.0, left: 14.0, right: 14.0),
-                color: Colors.purple[50],
+
                 child: Column(
                   children: <Widget>[
 
@@ -167,7 +110,6 @@ class _ClassesState extends State<Classes> {
                               '${classes[posi].lecture}',
                               style: TextStyle(
                                 color: Colors.indigo,
-                                backgroundColor: Colors.purple[50],
                                 fontSize: 22.0,
                               ),
                             ),
@@ -187,7 +129,7 @@ class _ClassesState extends State<Classes> {
                                   child: Text(
                                     '${posi + 1}',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       fontSize: 14.0,
                                     ),
                                   ),

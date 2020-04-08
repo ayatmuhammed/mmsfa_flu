@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mmsfa_flu/utils/usertodatabase.dart';
 import '../Classes.dart';
 import 'package:mmsfa_flu/database/controller/Auth.dart';
 import 'package:mmsfa_flu/database/controller/DataBofLogin.dart';
@@ -37,10 +36,6 @@ class _LoginSignInPageState extends State<LoginSignInPage> {
       }
     }
   }
-
-  //user need to input the email and password to i need to text editing
-  //TextEditingController _emailController = new TextEditingController();
-  //TextEditingController _passWordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     //now i build the user interface

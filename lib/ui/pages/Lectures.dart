@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
@@ -13,7 +12,6 @@ class Lectures extends StatefulWidget {
 final todoReference=FirebaseDatabase.instance.reference().child('todo');
 
 class _LecturesState extends State<Lectures> {
-  Drawer drawer = new Drawer();
 
   //the user that i takes it from database i put them in list
   List<Todo> classes;
@@ -31,9 +29,6 @@ class _LecturesState extends State<Lectures> {
         todoReference.onChildAdded.listen(_onClassesAdded);
   }
 
-
-  //it is cancel to the subscription it is closed the database
-
   @override
   void dispose() {
     super.dispose();
@@ -41,23 +36,17 @@ class _LecturesState extends State<Lectures> {
     _onnClassesChangedSubscription.cancel();
   }
 
-//now i design the ui to the user
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Student DB',
       home: Scaffold(
-        // drawer: drawer,
-        // drawerScrimColor: Colors.white,
+        drawer:DrawerComp(),
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Text('Your Classes',
             style: TextStyle(color: Colors.white, fontSize: 18.0),
           ),
           centerTitle: true,
-        ),
-        drawer: Drawer(
-          child:DrawerComp() ,
         ),
         body: Center(
           child: ListView.builder(
@@ -70,7 +59,6 @@ class _LecturesState extends State<Lectures> {
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -79,15 +67,12 @@ class _LecturesState extends State<Lectures> {
                             title: Text(
                               '${classes[posi].lecture}',
                               style: TextStyle(color: Colors.indigo,
-
-                               backgroundColor: Colors.purple[50],
                                 fontSize: 22.0,
                               ),
                             ),
                             subtitle: Text(
                               '${classes[posi].department}',
                               style: TextStyle(color: Colors.black,
-                                //  backgroundColor: Colors.purple[50],
                                 fontSize: 14.0,
                               ),
                             ),
