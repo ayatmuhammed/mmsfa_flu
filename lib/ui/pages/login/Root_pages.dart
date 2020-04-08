@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mmsfa_flu/ui/pages/login/Login.dart';
+import 'package:mmsfa_flu/ui/pages/login/LoginٍSignInPage.dart';
 import 'package:mmsfa_flu/ui/pages/Classes.dart';
 
 import 'package:mmsfa_flu/database/controller/Auth.dart';
@@ -36,7 +36,7 @@ class _RootPageState extends State<RootPage> {
       });
     });
   }
-//
+
 //  void _onLoggedIn() {
 //    widget.auth.getCurrentUser().then((user){
 //      setState(() {
@@ -72,14 +72,14 @@ class _RootPageState extends State<RootPage> {
         return _buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return new LoginSignInPage(
-//          auth: widget.auth,
+        return  LoginSignInPage(
+          auth: widget.auth,
 //          onSignedIn: _onLoggedIn,
         );
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new Classes(
+          return  Classes(
 //            userId: _userId,
 //            auth: widget.auth,
 //            onSignedOut: _onSignedOut,

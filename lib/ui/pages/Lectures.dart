@@ -67,7 +67,7 @@ class _LecturesState extends State<Lectures> {
               return Card(
                 margin: EdgeInsets.only(
                     top: 9.0, bottom: 9.0, left: 14.0, right: 14.0),
-                color: Colors.purple[50],
+                color: Colors.white,
                 child: Column(
                   children: <Widget>[
 
@@ -98,7 +98,7 @@ class _LecturesState extends State<Lectures> {
                                   backgroundColor: Colors.indigo,
                                   radius: 14.0,
                                   child: Text('${posi + 1}',
-                                    style: TextStyle(color: Colors.black,
+                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,
                                       //  backgroundColor: Colors.purple[50],
                                       fontSize: 14.0,
                                     ),

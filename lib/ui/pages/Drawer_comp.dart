@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
-import 'package:mmsfa_flu/ui/widgets/logoutDialog.dart';
-import 'package:smart_flare/actors/smart_flare_actor.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mmsfa_flu/utils/usertodatabase.dart';
 class DrawerComp extends StatefulWidget {
   @override
   _DrawerCompState createState() => _DrawerCompState();
