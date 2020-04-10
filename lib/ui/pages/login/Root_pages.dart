@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
 import 'package:mmsfa_flu/ui/pages/login/LoginٍSignInPage.dart';
 import 'package:mmsfa_flu/ui/pages/Classes.dart';
 
@@ -72,9 +73,8 @@ class _RootPageState extends State<RootPage> {
         return _buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return  LoginSignInPage(
-          auth: widget.auth,
-//          onSignedIn: _onLoggedIn,
+        return  SplashScreen(
+          baseAuth: widget.auth,
         );
         break;
       case AuthStatus.LOGGED_IN:

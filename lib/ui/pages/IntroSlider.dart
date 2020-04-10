@@ -2,9 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
+import 'package:mmsfa_flu/ui/pages/Classes.dart';
 import 'package:mmsfa_flu/ui/pages/login/LoginٍSignInPage.dart';
 
 class IntroSlider extends StatelessWidget {
+  final bool isStudent;
+
+  const IntroSlider({Key key, this.isStudent}) : super(key: key);
+
   List<PageViewModel> getStudentPages() => [
     PageViewModel(
         pageColor: const Color(0xFF03A9F4),
@@ -102,27 +107,16 @@ class IntroSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:
-      FutureBuilder(
-          future:  isStudent(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData){
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-
-           return Builder(
+      home: Builder(
               builder: (context) =>
                   IntroViewsFlutter(
-                    snapshot.data? getStudentPages():getTeacherPages()
+                    isStudent? getStudentPages():getTeacherPages()
                   ,
               onTapDoneButton: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginSignInPage(),
+                    builder: (context) => Classes(),
                   ),
                 );
               },
@@ -132,23 +126,11 @@ class IntroSlider extends StatelessWidget {
               ),
 
             )
-           );
-
-          }
-
       ),
 
 
     );
   }
 
-  Future<bool> isStudent() async {
-   final user= await FirebaseAuth.instance.currentUser();
-   if(user == null){
-     // goto login
-   }else{
-     return user.email.contains("@Student");
-   }
 
-  }
 }

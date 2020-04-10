@@ -55,7 +55,7 @@ class _LecturesState extends State<Lectures> {
             itemBuilder: (context, posi) {
               return Card(
                 margin: EdgeInsets.only(
-                    top: 9.0, bottom: 9.0, left: 14.0, right: 14.0),
+                    top: 9.0, bottom: 20.0, left: 14.0, right: 14.0),
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
@@ -66,13 +66,13 @@ class _LecturesState extends State<Lectures> {
                             //now i want to display the name of user in list
                             title: Text(
                               '${classes[posi].lecture}',
-                              style: TextStyle(color: Colors.indigo,
+                              style: TextStyle(color: Colors.black,
                                 fontSize: 22.0,
                               ),
                             ),
                             subtitle: Text(
                               '${classes[posi].department}',
-                              style: TextStyle(color: Colors.black,
+                              style: TextStyle(color: Colors.grey,
                                 fontSize: 14.0,
                               ),
                             ),
@@ -84,7 +84,7 @@ class _LecturesState extends State<Lectures> {
                                   radius: 14.0,
                                   child: Text('${posi + 1}',
                                     style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,
-                                      //  backgroundColor: Colors.purple[50],
+
                                       fontSize: 14.0,
                                     ),
                                   ),

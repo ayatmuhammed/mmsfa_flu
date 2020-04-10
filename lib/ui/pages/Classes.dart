@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
-import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/database/model/class.dart';
 import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
 import 'package:mmsfa_flu/ui/pages/student/StudentsList.dart';
@@ -64,23 +63,13 @@ class _ClassesState extends State<Classes> {
   }
 
 
-  File galleryFile;
+
 //now i design the ui to the user
   @override
   Widget build(BuildContext context) {
-    imageSelectorGallery() async {
-      galleryFile = await ImagePicker.pickImage(
-        source: ImageSource.gallery,
-      );
-
-      print("You selected gallery image : " + galleryFile.path);
-      setState(() {});
-    }
     return MaterialApp(
-      title: 'Student DB',
       home: Scaffold(
         drawer:DrawerComp(),
-        drawerScrimColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Text(
@@ -95,68 +84,71 @@ class _ClassesState extends State<Classes> {
             padding: EdgeInsets.only(top: 15.0),
             itemBuilder: (context, posi) {
               return Card(
+
                 margin: EdgeInsets.only(
                     top: 9.0, bottom: 9.0, left: 14.0, right: 14.0),
-
                 child: Column(
                   children: <Widget>[
+                    Container(
+                      height: 140.0,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
 
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: ListTile(
-                            //now i want to display the name of user in list
-                            title: Text(
-                              '${classes[posi].lecture}',
-                              style: TextStyle(
-                                color: Colors.indigo,
-                                fontSize: 22.0,
+                            child: ListTile(
+                              //now i want to display the name of user in list
+                              title: Text(
+                                '${classes[posi].lecture}',
+                                style: TextStyle(
+                                  color: Colors.indigo,
+                                  fontSize: 22.0,
+                                ),
                               ),
-                            ),
-                            subtitle: Text(
-                              '${classes[posi].department}',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14.0,
+                              subtitle: Text(
+                                '${classes[posi].department}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                ),
                               ),
-                            ),
-                            leading: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                CircleAvatar(
-                                  backgroundColor: Colors.indigo,
-                                  radius: 14.0,
-                                  child: Text(
-                                    '${posi + 1}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14.0,
+                              leading: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    backgroundColor: Colors.indigo,
+                                    radius: 14.0,
+                                    child: Text(
+                                      '${posi + 1}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              onTap: () => _navigateClassInformation(
+                                  context, classes[posi]),
                             ),
-                            onTap: () => _navigateClassInformation(
-                                context, classes[posi]),
                           ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.red,
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () =>
+                                _deleteClass(context, classes[posi], posi),
                           ),
-                          onPressed: () =>
-                              _deleteClass(context, classes[posi], posi),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.indigo,
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.indigo,
+                            ),
+                            onPressed: () =>
+                                _navigateClass(context, classes[posi]),
                           ),
-                          onPressed: () =>
-                              _navigateClass(context, classes[posi]),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
