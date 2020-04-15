@@ -37,13 +37,4 @@ class _SplashScreenState extends State<SplashScreen>{
 
   }
 }
-//SpinKitChasingDots(color: Colors.white),
-// SpinKitWave(color: Colors.white, type: SpinKitWaveType.center)
-//  SpinKitThreeBounce(color: Colors.white)
-//    SpinKitWanderingCubes(color: Colors.white)
-//  SpinKitWanderingCubes(color: Colors.white, shape: BoxShape.circle)
-//    SpinKitCircle(color: Colors.white)
-// SpinKitCubeGrid(size: 51.0, color: Colors.white)
 
-//   SpinKitFadingGrid(color: Colors.white, shape: BoxShape.rectangle)
-//   SpinKitHourGlass(color: Colors.white)
