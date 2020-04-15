@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
-
 class QrGenerator extends StatefulWidget {
-
   final String classID;
 
   const QrGenerator({Key key, this.classID}) : super(key: key);
+
   @override
   _QrGeneratorState createState() => _QrGeneratorState();
 }
@@ -33,12 +32,14 @@ class _QrGeneratorState extends State<QrGenerator> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          leading:new IconButton(
+          leading: new IconButton(
             icon: new Icon(Icons.arrow_back, color: Colors.indigo),
             onPressed: () => Navigator.of(context).pop('/homepage'),
           ),
           backgroundColor: Colors.white,
-          title: Text('Qr Generator',style: TextStyle(color: Colors.indigo),
+          title: Text(
+            'Qr Generator',
+            style: TextStyle(color: Colors.indigo),
           ),
         ),
         backgroundColor: Colors.grey[300],
@@ -48,11 +49,11 @@ class _QrGeneratorState extends State<QrGenerator> {
               children: <Widget>[
                 _qrCodeWidget(this.bytes, context),
                 Container(
-                  color: Colors.white ,
+                  color: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Padding(padding:EdgeInsets.only(top: 10.0,bottom: 10.0)),
+                      Padding(padding: EdgeInsets.only(top: 10.0, bottom: 10.0)),
                       TextField(
                         controller: this._inputController,
                         keyboardType: TextInputType.url,
@@ -104,14 +105,13 @@ class _QrGeneratorState extends State<QrGenerator> {
                     height: 190,
                     child: bytes.isEmpty
                         ? Center(
-                      child: Text('Empty code ... ', style: TextStyle(color: Colors.black38)),
-                    )
+                            child: Text('Empty code ... ', style: TextStyle(color: Colors.black38)),
+                          )
                         : Image.memory(bytes),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 7, left: 25, right: 25),
-                    child:
-                    Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Expanded(
@@ -159,99 +159,65 @@ class _QrGeneratorState extends State<QrGenerator> {
 
   Widget _buttonGroup() {
     return Padding(
-      padding: EdgeInsets.only(top: 25, left:50, right:50, bottom: 25),
-      child:
-    Row(
+      padding: EdgeInsets.only(top: 25, left: 50, right: 50, bottom: 25),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-           flex:1,
-            child:  GestureDetector(
-              onTap: ()async{
-                _generateBarCode(widget.classID+"Lecs"+this._inputController.text);
+            flex: 1,
+            child: GestureDetector(
+              onTap: () async {
+                _generateBarCode(widget.classID + "/Lecs/" + this._inputController.text);
 
-
-                final studentReference=FirebaseDatabase.instance.reference().child('todo/${widget.classID}');
-
+                print(widget.classID + "/Lecs/" + this._inputController.text);
+                FirebaseDatabase.instance.reference().child('todo/${widget.classID}').set({"link": this._inputController.text});
               },
-              child: Text('Generate',style: TextStyle(color: Colors.red),),
+              child: Text(
+                'Generate',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ),
-
         ],
       ),
     );
   }
 
-
   Future _generateBarCode(String inputCode) async {
     // get the the information we need inside bar code
     // convert to json
-    Lecture fakeLecture= new Lecture("5b", "5", "4", "10:30", DateTime.sunday);
+    Lecture fakeLecture = new Lecture("5b", "5", "4", "10:30", DateTime.sunday);
 
-    
-    Uint8List result = await scanner.generateBarCode(fakeLecture.toJson());
+    Uint8List result = await scanner.generateBarCode(inputCode);
+    print(inputCode);
     this.setState(() => this.bytes = result);
   }
-
 }
 
-
-class Lecture{
+class Lecture {
   String lectureId;
   String stageId;
   String branchId;
   String time; // TODO : improve type
   int day;
 
-  Lecture(this.lectureId, this.stageId, this.branchId, this.time,
-      this.day);
+  Lecture(this.lectureId, this.stageId, this.branchId, this.time, this.day);
 
   toJson() {
-    return {
-      "lectureId": lectureId,
-      "stageId": stageId,
-      " branchId":  branchId,
-      "time" : time,
-      "day" : day
-    };
+    return {"lectureId": lectureId, "stageId": stageId, " branchId": branchId, "time": time, "day": day};
   }
 
-  fromSnapShot(Map<String, dynamic> map){
-    lectureId=map['lectureId'];
-    stageId=map['stageId'];
-    branchId=map['branchId'];
-    time=map['time'];
-    day=map['day'];
-
+  fromSnapShot(Map<String, dynamic> map) {
+    lectureId = map['lectureId'];
+    stageId = map['stageId'];
+    branchId = map['branchId'];
+    time = map['time'];
+    day = map['day'];
   }
 }
 
-
-
-List stages= ["One", "Two", "Three", "Four"];
-List branches= ["Sw", "Ai", "Network", "Security"];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+List stages = ["One", "Two", "Three", "Four"];
+List branches = ["Sw", "Ai", "Network", "Security"];
 
 //import 'dart:async';
 //import 'dart:typed_data';
@@ -314,7 +280,6 @@ List branches= ["Sw", "Ai", "Network", "Security"];
 //  }
 //}
 
-
 //import 'dart:io';
 //
 //import 'package:firebase_storage/firebase_storage.dart';
@@ -368,7 +333,6 @@ List branches= ["Sw", "Ai", "Network", "Security"];
 //
 //
 //
-
 
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter/material.dart';

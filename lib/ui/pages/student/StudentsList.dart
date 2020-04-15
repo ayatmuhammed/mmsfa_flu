@@ -21,8 +21,8 @@ final studentReference = FirebaseDatabase.instance.reference().child('student');
 class _StudentsListState extends State<StudentsList> {
   //the user that i takes it from database i put them in list
   List<Student> items;
-  // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
 
+  // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
 
   //his means when i add new user to list it is auto update and add the user
   // now i want to init. th database i means the database is download automatically
@@ -32,14 +32,11 @@ class _StudentsListState extends State<StudentsList> {
     super.initState();
     items = new List();
 
-
-    if(widget.myClass.studentIds != null) {
+    if (widget.myClass.studentIds != null) {
       for (int i = 0; i < (widget.myClass.studentIds.length); i++) {
-        studentReference.child(widget.myClass.studentIds[i])
-            .onValue.listen(_onStudentAdded);
+        studentReference.child(widget.myClass.studentIds[i]).onValue.listen(_onStudentAdded);
       }
     }
-
   }
 
   //it is cancel to the subscription it is closed the database
@@ -47,7 +44,6 @@ class _StudentsListState extends State<StudentsList> {
   @override
   void dispose() {
     super.dispose();
-
   }
 
 //now i design the ui to the user
@@ -61,21 +57,24 @@ class _StudentsListState extends State<StudentsList> {
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop('/homepage'),
-          ),actions: <Widget>[                FlatButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-
-                builder: (context) => QrGenerator(classID :widget.myClass.key),
-              ),
-            );
-          },
-          child: Text('- QR Generate', style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.bold, color: Colors.indigo),
           ),
-        ),],
+          actions: <Widget>[
+            FlatButton(
+              color: Colors.white,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QrGenerator(classID: widget.myClass.key),
+                  ),
+                );
+              },
+              child: Text(
+                '- QR Generate',
+                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.indigo),
+              ),
+            ),
+          ],
           backgroundColor: Colors.indigo,
           title: Text('Your Student', style: TextStyle(color: Colors.white)),
 //          title:Text('Add Your Student',style: TextStyle(color: Colors.white)
@@ -128,8 +127,7 @@ class _StudentsListState extends State<StudentsList> {
                               ),
                             ],
                           ),
-                          onTap: () => _navigateStudentInformation(
-                              context, items[position]),
+                          onTap: () => _navigateStudentInformation(context, items[position]),
                         ),
                       ),
                       IconButton(
@@ -137,16 +135,14 @@ class _StudentsListState extends State<StudentsList> {
                           Icons.delete,
                           color: Colors.red,
                         ),
-                        onPressed: () =>
-                            _deleteStudent(context, items[position], position),
+                        onPressed: () => _deleteStudent(context, items[position], position),
                       ),
                       IconButton(
                         icon: Icon(
                           Icons.edit,
                           color: Colors.indigo,
                         ),
-                        onPressed: () =>
-                            _navigateStudent(context, items[position]),
+                        onPressed: () => _navigateStudent(context, items[position]),
                       ),
                     ],
                   ),
@@ -170,11 +166,9 @@ class _StudentsListState extends State<StudentsList> {
   void _onStudentAdded(Event event) {
     setState(() {
       try {
-        var oldStudentValue =
-            items.singleWhere((student) => student.id == event.snapshot.key);
+        var oldStudentValue = items.singleWhere((student) => student.id == event.snapshot.key);
 
-        items[items.indexOf(oldStudentValue)] =
-            new Student.fromSnapShot(event.snapshot);
+        items[items.indexOf(oldStudentValue)] = new Student.fromSnapShot(event.snapshot);
       } catch (e) {
         print('${event.snapshot.value}');
         items.add(new Student.fromSnapShot(event.snapshot));
@@ -183,12 +177,9 @@ class _StudentsListState extends State<StudentsList> {
     });
   }
 
-
-
   //delete need to connect to FireBase so we need to async and await the result
 
-  void _deleteStudent(
-      BuildContext context, Student student, int position) async {
+  void _deleteStudent(BuildContext context, Student student, int position) async {
     await studentReference.child(student.id).remove().then((_) {
       setState(() {
         items.removeAt(position);
@@ -203,29 +194,29 @@ class _StudentsListState extends State<StudentsList> {
     );
   }
 
-  void _navigateStudentInformation(
-      BuildContext context, Student student) async {
+  void _navigateStudentInformation(BuildContext context, Student student) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => StudentInformation(student)),
     );
   }
+
 //when i want to create new user
 
   void _createNewStudent(BuildContext context) async {
-    String studentKey= await Navigator.push(
+    String studentKey = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AddStudentInformation(
           Student(null, '', '', '', '', ''),
         ),
       ),
-
     );
     widget.myClass.studentIds.add(studentKey);
     print(widget.myClass.key);
-    FirebaseDatabase.instance.reference().child('todo').child(widget.myClass.key).update({'students' :widget.myClass.studentIds},);
-    studentReference.child(studentKey)
-        .onValue.listen(_onStudentAdded);
+    FirebaseDatabase.instance.reference().child('todo').child(widget.myClass.key).update(
+      {'students': widget.myClass.studentIds},
+    );
+    studentReference.child(studentKey).onValue.listen(_onStudentAdded);
   }
 }
