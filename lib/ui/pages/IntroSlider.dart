@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:mmsfa_flu/ui/pages/Classes.dart';
-import 'package:mmsfa_flu/ui/pages/login/LoginٍSignInPage.dart';
 
 class IntroSlider extends StatelessWidget {
   final bool isStudent;
