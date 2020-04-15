@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:qrscan/qrscan.dart' as scanner;
+
 class ScanScreen extends StatefulWidget {
   @override
   _ScanScreenState createState() => _ScanScreenState();
@@ -22,12 +24,19 @@ class _ScanScreenState extends State<ScanScreen> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading: IconButton(icon: Icon((Icons.arrow_back),color: Colors.indigo,),
-            onPressed: (){
+          leading: IconButton(
+            icon: Icon(
+              (Icons.arrow_back),
+              color: Colors.indigo,
+            ),
+            onPressed: () {
               Navigator.pop(context);
             },
           ),
-          title: Text('Qrcode Scanner',style: TextStyle(color: Colors.indigo),),
+          title: Text(
+            'Qrcode Scanner',
+            style: TextStyle(color: Colors.indigo),
+          ),
         ),
         body: Center(
           child: Column(
@@ -38,9 +47,19 @@ class _ScanScreenState extends State<ScanScreen> {
                 height: 200,
                 child: Image.memory(bytes),
               ),
-
               Text('RESULT  $barcode'),
-              RaisedButton(onPressed: _scan, child: Text("Scan",style: TextStyle(color: Colors.indigo))),
+              RaisedButton(
+                  onPressed: _scan,
+                  child: Text("Scan", style: TextStyle(color: Colors.indigo))),
+              RaisedButton(
+                  onPressed: () {
+                    final studentReference = FirebaseDatabase.instance
+                        .reference()
+                        .child('todo/$barcode');
+                    studentReference.set({"ff": barcode});
+                  },
+                  child: Text("Add To Lec",
+                      style: TextStyle(color: Colors.indigo))),
             ],
           ),
         ),
@@ -52,5 +71,4 @@ class _ScanScreenState extends State<ScanScreen> {
     String barcode = await scanner.scan();
     setState(() => this.barcode = barcode);
   }
-
 }
