@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mmsfa_flu/database/model/class.dart';
 import 'package:mmsfa_flu/database/model/Student.dart';
+import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/student/AddStudentInformation.dart';
 import 'package:mmsfa_flu/ui/pages/student/StudentInformation.dart';
 
@@ -60,7 +61,21 @@ class _StudentsListState extends State<StudentsList> {
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop('/homepage'),
+          ),actions: <Widget>[                FlatButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+
+                builder: (context) => QrGenerator(classID :widget.myClass.key),
+              ),
+            );
+          },
+          child: Text('- QR Generate', style: TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.bold, color: Colors.indigo),
           ),
+        ),],
           backgroundColor: Colors.indigo,
           title: Text('Your Student', style: TextStyle(color: Colors.white)),
 //          title:Text('Add Your Student',style: TextStyle(color: Colors.white)
