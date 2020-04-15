@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mmsfa_flu/database/controller/Auth.dart';
-import 'package:mmsfa_flu/ui/pages/login/Login%D9%8DSignInPage.dart';
+import 'package:mmsfa_flu/ui/pages/login/LoginSignInPage.dart';
 class SplashScreen extends StatefulWidget {
   final BaseAuth baseAuth;
 

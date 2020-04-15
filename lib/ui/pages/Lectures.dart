@@ -10,17 +10,11 @@ class Lectures extends StatefulWidget {
 }
 
 final todoReference=FirebaseDatabase.instance.reference().child('todo');
-
 class _LecturesState extends State<Lectures> {
-
-  //the user that i takes it from database i put them in list
   List<Todo> classes;
-
-  // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
   StreamSubscription<Event> _onClassesAddedSubscription;
   StreamSubscription<
-      Event> _onnClassesChangedSubscription; //his means when i add new user to list it is auto update and add the user
-  // now i want to init. th database i means the database is download automatically
+      Event> _onnClassesChangedSubscription;
   @override
   void initState() {
     super.initState();
@@ -63,7 +57,6 @@ class _LecturesState extends State<Lectures> {
                       children: <Widget>[
                         Expanded(
                           child: ListTile(
-                            //now i want to display the name of user in list
                             title: Text(
                               '${classes[posi].lecture}',
                               style: TextStyle(color: Colors.black,

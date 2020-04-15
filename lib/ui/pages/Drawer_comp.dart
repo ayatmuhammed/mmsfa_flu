@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mmsfa_flu/database/controller/Auth.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
-import 'package:mmsfa_flu/ui/pages/login/Login%D9%8DSignInPage.dart';
+import 'package:mmsfa_flu/ui/pages/login/LoginSignInPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class DrawerComp extends StatefulWidget {
   @override
@@ -90,6 +90,7 @@ File image;
                     Navigator.of(context).pushAndRemoveUntil(
                       // the new route
                       MaterialPageRoute(
+
                         builder: (BuildContext context) => LoginSignInPage(auth: Auth(),),
                       ),
                           (Route route) => false,
