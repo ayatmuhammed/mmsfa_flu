@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
-import 'package:mmsfa_flu/ui/pages/login/LoginٍSignInPage.dart';
 import 'package:mmsfa_flu/ui/pages/Classes.dart';
 
 import 'package:mmsfa_flu/database/controller/Auth.dart';
@@ -38,25 +38,6 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-//  void _onLoggedIn() {
-//    widget.auth.getCurrentUser().then((user){
-//      setState(() {
-//        _userId = user.uid.toString();
-//      });
-//    });
-//    setState(() {
-//      authStatus = AuthStatus.LOGGED_IN;
-//
-//    });
-//  }
-//
-//  void _onSignedOut() {
-//    setState(() {
-//      authStatus = AuthStatus.NOT_LOGGED_IN;
-//      _userId = "";
-//    });
-//  }
-
   Widget _buildWaitingScreen() {
     return Scaffold(
       body: Container(
@@ -73,17 +54,14 @@ class _RootPageState extends State<RootPage> {
         return _buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return  SplashScreen(
-          baseAuth: widget.auth,
-        );
+        return Classes();
+//        return  SplashScreen(
+//          baseAuth: widget.auth,
+//        );
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return  Classes(
-//            userId: _userId,
-//            auth: widget.auth,
-//            onSignedOut: _onSignedOut,
-          );
+          return  Classes();
         } else return _buildWaitingScreen();
         break;
       default:

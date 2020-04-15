@@ -84,7 +84,6 @@ class _ClassesState extends State<Classes> {
             padding: EdgeInsets.only(top: 15.0),
             itemBuilder: (context, posi) {
               return Card(
-
                 margin: EdgeInsets.only(
                     top: 9.0, bottom: 9.0, left: 14.0, right: 14.0),
                 child: Column(
@@ -94,9 +93,7 @@ class _ClassesState extends State<Classes> {
                       child: Row(
                         children: <Widget>[
                           Expanded(
-
                             child: ListTile(
-                              //now i want to display the name of user in list
                               title: Text(
                                 '${classes[posi].lecture}',
                                 style: TextStyle(
