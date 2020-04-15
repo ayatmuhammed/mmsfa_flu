@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -7,6 +8,10 @@ import 'package:qrscan/qrscan.dart' as scanner;
 
 
 class QrGenerator extends StatefulWidget {
+
+  final String classID;
+
+  const QrGenerator({Key key, this.classID}) : super(key: key);
   @override
   _QrGeneratorState createState() => _QrGeneratorState();
 }
@@ -163,7 +168,11 @@ class _QrGeneratorState extends State<QrGenerator> {
            flex:1,
             child:  GestureDetector(
               onTap: ()async{
-                _generateBarCode(this._inputController.text);
+                _generateBarCode(widget.classID+"Lecs"+this._inputController.text);
+
+
+                final studentReference=FirebaseDatabase.instance.reference().child('todo/${widget.classID}');
+
               },
               child: Text('Generate',style: TextStyle(color: Colors.red),),
             ),
