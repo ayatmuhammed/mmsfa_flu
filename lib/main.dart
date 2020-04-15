@@ -7,7 +7,7 @@ import 'ui/pages/Classes.dart';
 //bool firstRun=true;
 //const firstRunKey= 'firstRun';
 Future main() async {
- // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
  // SharedPreferences ref= await SharedPreferences.getInstance();
  // firstRun=ref.getBool(firstRunKey)?? true;
  // ref.setBool(firstRunKey, false);
