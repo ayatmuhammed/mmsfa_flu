@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mmsfa_flu/ui/pages/IntroSlider.dart';
-import '../Classes.dart';
+import '../TeacherClassesTemp.dart';
 import 'package:mmsfa_flu/database/controller/Auth.dart';
 import 'package:mmsfa_flu/database/controller/DataBofLogin.dart';
 
@@ -139,7 +139,7 @@ class _LoginSignInPageState extends State<LoginSignInPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return Classes();
+                return TeacherClassesTemp();
               },
             ),
           );
