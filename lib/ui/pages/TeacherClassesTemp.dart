@@ -9,21 +9,21 @@ import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/database/model/class.dart';
 import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
 import 'package:mmsfa_flu/ui/pages/student/StudentsList.dart';
-class Classes extends StatefulWidget {
+class TeacherClassesTemp extends StatefulWidget {
 
-const  Classes(
+const  TeacherClassesTemp(
 {Key key,
   this.user,
 }):super(key:key);
 final FirebaseUser user;
  final String title = "Pick Image";
   @override
-  _ClassesState createState() => _ClassesState();
+  _TeacherClassesTempState createState() => _TeacherClassesTempState();
 }
 
 final todoReference = FirebaseDatabase.instance.reference().child('todo');
 
-class _ClassesState extends State<Classes> {
+class _TeacherClassesTempState extends State<TeacherClassesTemp> {
   final String title = "Flutter Pick Image demo";
   Future<File> imageFile;
 
