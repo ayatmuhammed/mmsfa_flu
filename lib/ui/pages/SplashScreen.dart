@@ -11,30 +11,33 @@ class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
-
-class _SplashScreenState extends State<SplashScreen>{
-  final duration= Duration(seconds: 3);
+class _SplashScreenState extends State<SplashScreen> {
+  final duration = Duration(seconds: 3);
   @override
   void initState() {
     super.initState();
-    Timer(duration, ()=> Navigator.push(context, MaterialPageRoute(builder :(context)=> LoginSignInPage(
-      auth: widget.baseAuth,
-    ))));
+    Timer(
+        duration,
+        () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginSignInPage(
+                      auth: widget.baseAuth,
+                    ),
+            ),
+        ),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: SpinKitWave(color: Colors.indigo, type: SpinKitWaveType.center)
-
-        ),
-
+            child: SpinKitWave(
+                color: Colors.indigo, type: SpinKitWaveType.center)),
       ),
-
     );
-
   }
 }
-
