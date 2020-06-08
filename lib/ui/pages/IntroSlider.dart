@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
-import 'package:mmsfa_flu/ui/pages/Classes.dart';
+import 'package:mmsfa_flu/ui/pages/TeacherClassesTemp.dart';
+
+import 'ClassesPage.dart';
 
 class IntroSlider extends StatelessWidget {
   final bool isStudent;
@@ -115,7 +117,7 @@ class IntroSlider extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Classes(),
+                    builder: (context) => ClassesPage(),
                   ),
                 );
               },
