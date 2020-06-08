@@ -63,20 +63,7 @@ File image;
                   height: 5.0,
                 ),
                 Divider(color: Colors.grey,height:10.0,),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QrGenerator(),
-                      ),
-                    );
-                  },
-                  child: Text('- QR Generate', style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold, color: Colors.indigo),
-                  ),
-                ),
+
                 SizedBox(
                   height: 2.0,
                 ),
