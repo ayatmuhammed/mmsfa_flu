@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
-import 'package:mmsfa_flu/ui/pages/Classes.dart';
+import 'package:mmsfa_flu/ui/pages/TeacherClassesTemp.dart';
 
 import 'package:mmsfa_flu/database/controller/Auth.dart';
+
+import '../ClassesPage.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -54,14 +56,14 @@ class _RootPageState extends State<RootPage> {
         return _buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return Classes();
+        return ClassesPage();
 //        return  SplashScreen(
 //          baseAuth: widget.auth,
 //        );
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return  Classes();
+          return  TeacherClassesTemp();
         } else return _buildWaitingScreen();
         break;
       default:
