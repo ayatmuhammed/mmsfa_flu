@@ -7,21 +7,23 @@ import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/database/model/TeacherModel.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
+import 'package:mmsfa_flu/database/model/class.dart';
+import 'package:mmsfa_flu/ui/cards/ClassCard.dart';
+import 'package:mmsfa_flu/ui/dialog/ClassBottomSheet.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
+import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
 import '../../main.dart';
-
 
 class ClassesPage extends StatefulWidget {
   @override
   _ClassesPageState createState() => _ClassesPageState();
 }
 
-
 class _ClassesPageState extends State<ClassesPage> {
-  final isTeacher= true; // TODO: change this
+  final isTeacher = true; // TODO: change this
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,11 @@ class _ClassesPageState extends State<ClassesPage> {
         ),
         body: FutureBuilder<DocumentSnapshot>(
           future: Firestore.instance
-              .collection(isTeacher? TeachersCollection.COL_NAME : StudentsCollection.COL_NAME)
-              .document('9XaPOZ6oREN0or64tjcynOuEVHk2')
+              .collection(isTeacher
+                  ? TeachersCollection.COL_NAME
+                  : StudentsCollection.COL_NAME)
+              .document(// TODO: change this
+                  '9XaPOZ6oREN0or64tjcynOuEVHk2') // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
               .get(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
@@ -56,11 +61,9 @@ class _ClassesPageState extends State<ClassesPage> {
               DocumentSnapshot documentSnapshot = snapshot.data;
               logger.i("documentSnapshot: ${documentSnapshot.data}");
 
-
-              UserModel userModel =
-              isTeacher?
-              TeacherModel.fromSnapshot(documentSnapshot):
-              StudentModel.fromSnapshot(documentSnapshot);
+              UserModel userModel = isTeacher
+                  ? TeacherModel.fromSnapshot(documentSnapshot)
+                  : StudentModel.fromSnapshot(documentSnapshot);
 
               logger.i(userModel.toString());
 
@@ -70,11 +73,26 @@ class _ClassesPageState extends State<ClassesPage> {
             }
           },
         ),
+        floatingActionButton: isTeacher
+            ? FloatingActionButton(
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                backgroundColor: Colors.indigo,
+                onPressed: () => showAddClassBottomSheet(context),
+              )
+            : SizedBox(),
       ),
     );
   }
 
-
+  void showAddClassBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => ClassBottomSheet(),
+    );
+  }
 }
 
 class ClassesList extends StatelessWidget {
@@ -98,111 +116,60 @@ class ClassesList extends StatelessWidget {
         } else if (!snapshot.hasData) {
           return Center(child: Text("You have no classes!"));
         } else {
-          List<StudyClassModel> studentClasses= snapshot.data;
+          List<StudyClassModel> studentClasses = snapshot.data;
+
           return ListView.builder(
             itemCount: studentClasses.length,
-            itemBuilder: (BuildContext context, int index) =>
-                ClassCard(
-                  name: studentClasses[index].className,
-                  position: index + 1,),
+            itemBuilder: (BuildContext context, int index) {
+              final className = studentClasses[index].className;
+              return ClassCard(
+                name: className,
+                position: index + 1,
+                canEdit: userModel is TeacherModel,
+                onEditPressed: () =>
+                    showAddClassBottomSheet(context, className),
+                onDeletePressed: () {
+                  logger.i("delete clicked");
+                },
+              );
+            },
           );
-
         }
       },
+    );
+  }
+
+  void showAddClassBottomSheet(BuildContext context, String className) {
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) => ClassBottomSheet(
+        className: className,
+      ),
     );
   }
 
   Future<List<StudyClassModel>> _getClasses() async {
     List<StudyClassModel> classes = List();
 
-    if(userModel is StudentModel) {
-      for (DocumentReference classDoc in (userModel as StudentModel).classRefs) {
+    if (userModel is StudentModel) {
+      for (DocumentReference classDoc
+          in (userModel as StudentModel).classRefs) {
         var classModel = StudyClassModel.fromSnapshot(await classDoc.get());
         classes.add(classModel);
       }
-    }else {
-      final querySnapshot= await Firestore.instance
+    } else {
+      final querySnapshot = await Firestore.instance
           .collection(TeachersCollection.COL_NAME)
           .document(userModel.userId)
           .collection(ClassesCollection.COL_NAME)
           .getDocuments();
 
-      classes = querySnapshot
-          .documents
-          .map((e)=> StudyClassModel.fromSnapshot(e))
+      classes = querySnapshot.documents
+          .map((e) => StudyClassModel.fromSnapshot(e))
           .toList();
     }
     logger.i(classes.toString());
     return classes;
-  }
-}
-
-class ClassCard extends StatelessWidget {
-  final int position;
-  final String name;
-
-  const ClassCard({
-    Key key,
-    this.name,
-    this.position,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(top: 9.0, bottom: 20.0, left: 14.0, right: 14.0),
-      color: Colors.white,
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: ListTile(
-                    title: Text(
-                      name,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22.0,
-                      ),
-                    ),
-//                  subtitle: Text(
-//                    '${classes[posi].department}',
-//                    style: TextStyle(color: Colors.grey,
-//                      fontSize: 14.0,
-//                    ),
-//                  ),
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: Colors.indigo,
-                          radius: 14.0,
-                          child: Text(
-                            '$position',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              //QrScan(),
-                              ScanScreen(),
-                        ),
-                      );
-                    }),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 }
