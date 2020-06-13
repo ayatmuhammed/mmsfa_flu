@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
-import 'package:mmsfa_flu/ui/pages/TeacherClassesTemp.dart';
 
 import 'ClassesPage.dart';
 
