@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
+import 'package:mmsfa_flu/database/controller/ClassesViewModel.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/database/model/TeacherModel.dart';
@@ -24,6 +25,10 @@ class ClassesPage extends StatefulWidget {
 
 class _ClassesPageState extends State<ClassesPage> {
   final isTeacher = true; // TODO: change this
+  // TODO: change this
+  final documentId= '9XaPOZ6oREN0or64tjcynOuEVHk2'; // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
+
+  ClassesViewModel viewModel= ClassesViewModelImp();
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +46,9 @@ class _ClassesPageState extends State<ClassesPage> {
         body: FutureBuilder<DocumentSnapshot>(
           future: Firestore.instance
               .collection(isTeacher
-                  ? TeachersCollection.COL_NAME
-                  : StudentsCollection.COL_NAME)
-              .document(// TODO: change this
-                  '9XaPOZ6oREN0or64tjcynOuEVHk2') // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
+                  ? TeachersCollection.NAME
+                  : StudentsCollection.NAME)
+              .document(documentId)
               .get(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
@@ -69,6 +73,7 @@ class _ClassesPageState extends State<ClassesPage> {
 
               return ClassesList(
                 userModel: userModel,
+                viewModel: viewModel
               );
             }
           },
@@ -87,25 +92,28 @@ class _ClassesPageState extends State<ClassesPage> {
     );
   }
 
-  void showAddClassBottomSheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> showAddClassBottomSheet(BuildContext context) async {
+    final className= await showModalBottomSheet<String>(
       context: context,
       builder: (BuildContext context) => ClassBottomSheet(),
     );
+
+    viewModel.addClass(StudyClassModel("", className));
   }
 }
 
 class ClassesList extends StatelessWidget {
   final UserModel userModel;
+  final ClassesViewModel viewModel;
 
-  const ClassesList({Key key, @required this.userModel}) : super(key: key);
+  const ClassesList({Key key, @required this.userModel, this.viewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<StudyClassModel>>(
-      future: _getClasses(),
+    return StreamBuilder<List<StudyClassModel>>(
+      stream: viewModel.getClasses(userModel),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: SpinKitChasingDots(
               color: Colors.indigo,
@@ -121,15 +129,15 @@ class ClassesList extends StatelessWidget {
           return ListView.builder(
             itemCount: studentClasses.length,
             itemBuilder: (BuildContext context, int index) {
-              final className = studentClasses[index].className;
+              final studyClass = studentClasses[index];
               return ClassCard(
-                name: className,
+                name: studyClass.className,
                 position: index + 1,
                 canEdit: userModel is TeacherModel,
                 onEditPressed: () =>
-                    showAddClassBottomSheet(context, className),
+                    showEditClassBottomSheet(context, studyClass),
                 onDeletePressed: () {
-                  logger.i("delete clicked");
+                  viewModel.deleteClass(studyClass.classId);
                 },
               );
             },
@@ -139,37 +147,20 @@ class ClassesList extends StatelessWidget {
     );
   }
 
-  void showAddClassBottomSheet(BuildContext context, String className) {
+  Future<void> showEditClassBottomSheet(BuildContext context, StudyClassModel studyClassModel) async {
 
-    showModalBottomSheet(
+    final className= await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) => ClassBottomSheet(
-        className: className,
+        className: studyClassModel.className,
       ),
+
     );
+    if(className == null || className.isEmpty) return;
+
+    studyClassModel.className= className;
+    viewModel.addClass(studyClassModel);
   }
 
-  Future<List<StudyClassModel>> _getClasses() async {
-    List<StudyClassModel> classes = List();
-
-    if (userModel is StudentModel) {
-      for (DocumentReference classDoc
-          in (userModel as StudentModel).classRefs) {
-        var classModel = StudyClassModel.fromSnapshot(await classDoc.get());
-        classes.add(classModel);
-      }
-    } else {
-      final querySnapshot = await Firestore.instance
-          .collection(TeachersCollection.COL_NAME)
-          .document(userModel.userId)
-          .collection(ClassesCollection.COL_NAME)
-          .getDocuments();
-
-      classes = querySnapshot.documents
-          .map((e) => StudyClassModel.fromSnapshot(e))
-          .toList();
-    }
-    logger.i(classes.toString());
-    return classes;
-  }
 }
