@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
-import 'package:mmsfa_flu/ui/pages/TeacherClassesTemp.dart';
 
 import 'package:mmsfa_flu/database/controller/Auth.dart';
 
@@ -63,7 +62,7 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return  TeacherClassesTemp();
+          return  ClassesPage();
         } else return _buildWaitingScreen();
         break;
       default:
