@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
 
 class ClassCard extends StatelessWidget {
@@ -62,9 +63,9 @@ class ClassCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
+                          builder: (context) => QrGenerator()
                           //QrScan(),
-                          ScanScreen(),
+                          //ScanScreen(),
                         ),
                       );
                     }),
@@ -75,7 +76,7 @@ class ClassCard extends StatelessWidget {
                     Icons.delete,
                     color: Colors.red,
                   ),
-                  onPressed: onEditPressed)
+                  onPressed: onDeletePressed)
                   : SizedBox(),
               canEdit
                   ? IconButton(
@@ -83,7 +84,7 @@ class ClassCard extends StatelessWidget {
                     Icons.edit,
                     color: Colors.indigo,
                   ),
-                  onPressed: onDeletePressed)
+                  onPressed: onEditPressed)
                   : SizedBox(),
             ],
           ),
