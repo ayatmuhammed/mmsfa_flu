@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
-import 'package:mmsfa_flu/database/controller/ClassesViewModel.dart';
+import 'package:mmsfa_flu/database/viewModels/ClassesViewModel.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/database/model/TeacherModel.dart';
@@ -12,23 +12,25 @@ import 'package:mmsfa_flu/database/model/class.dart';
 import 'package:mmsfa_flu/ui/cards/ClassCard.dart';
 import 'package:mmsfa_flu/ui/dialog/ClassBottomSheet.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
+import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
 import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
 import '../../main.dart';
 
-class ClassesPage extends StatefulWidget {
+class ClassesScreen extends StatefulWidget {
   @override
-  _ClassesPageState createState() => _ClassesPageState();
+  _ClassesScreenState createState() => _ClassesScreenState();
 }
 
-class _ClassesPageState extends State<ClassesPage> {
-  final isTeacher = true; // TODO: change this
+class _ClassesScreenState extends State<ClassesScreen> {
+  final isTeacher = false; // TODO: change this
   // TODO: change this
-  final documentId= '9XaPOZ6oREN0or64tjcynOuEVHk2'; // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
+  final documentId =
+      'kNXrxODnpYQAQXyejFsysa3Pgmp1'; // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
 
-  ClassesViewModel viewModel= ClassesViewModelImp();
+  ClassesViewModel viewModel = ClassesViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +47,8 @@ class _ClassesPageState extends State<ClassesPage> {
         ),
         body: FutureBuilder<DocumentSnapshot>(
           future: Firestore.instance
-              .collection(isTeacher
-                  ? TeachersCollection.NAME
-                  : StudentsCollection.NAME)
+              .collection(
+                  isTeacher ? TeachersCollection.NAME : StudentsCollection.NAME)
               .document(documentId)
               .get(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -71,10 +72,7 @@ class _ClassesPageState extends State<ClassesPage> {
 
               logger.i(userModel.toString());
 
-              return ClassesList(
-                userModel: userModel,
-                viewModel: viewModel
-              );
+              return ClassesList(userModel: userModel, viewModel: viewModel);
             }
           },
         ),
@@ -93,7 +91,7 @@ class _ClassesPageState extends State<ClassesPage> {
   }
 
   Future<void> showAddClassBottomSheet(BuildContext context) async {
-    final className= await showModalBottomSheet<String>(
+    final className = await showModalBottomSheet<String>(
       context: context,
       builder: (BuildContext context) => ClassBottomSheet(),
     );
@@ -106,7 +104,8 @@ class ClassesList extends StatelessWidget {
   final UserModel userModel;
   final ClassesViewModel viewModel;
 
-  const ClassesList({Key key, @required this.userModel, this.viewModel}) : super(key: key);
+  const ClassesList({Key key, @required this.userModel, this.viewModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +138,20 @@ class ClassesList extends StatelessWidget {
                 onDeletePressed: () {
                   viewModel.deleteClass(studyClass.classId);
                 },
+                onCardPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => userModel is TeacherModel
+                            ? QrGenerator(
+                                classModel: studyClass,
+                                userId: userModel.userId,
+                              )
+                            : ScanScreen(
+                                classRef: getClassRef(index),
+                              )),
+                  );
+                },
               );
             },
           );
@@ -147,20 +160,21 @@ class ClassesList extends StatelessWidget {
     );
   }
 
-  Future<void> showEditClassBottomSheet(BuildContext context, StudyClassModel studyClassModel) async {
+  DocumentReference getClassRef(int index) =>
+      (userModel as StudentModel).classRefs[index];
 
-    final className= await showModalBottomSheet(
+  Future<void> showEditClassBottomSheet(
+      BuildContext context, StudyClassModel studyClassModel) async {
+    final className = await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) => ClassBottomSheet(
         className: studyClassModel.className,
       ),
-
     );
-    if(className == null || className.isEmpty) return;
+    if (className == null || className.isEmpty) return;
 
-    studyClassModel.className= className;
+    studyClassModel.className = className;
     viewModel.addClass(studyClassModel);
   }
-
 }

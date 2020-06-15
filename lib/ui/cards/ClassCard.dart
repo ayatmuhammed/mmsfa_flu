@@ -9,6 +9,7 @@ class ClassCard extends StatelessWidget {
   final bool canEdit;
   final void Function() onEditPressed;
   final void Function() onDeletePressed;
+  final void Function() onCardPressed;
 
   const ClassCard({
     Key key,
@@ -17,84 +18,72 @@ class ClassCard extends StatelessWidget {
     this.canEdit,
     @required this.onEditPressed,
     @required this.onDeletePressed,
+    @required this.onCardPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 50.0,
-      height: 170.0,
-      child: Card(
-        margin: EdgeInsets.all(10.0),
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                      title: Text(
-                        name,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22.0,
-                        ),
+    return Card(
+      margin: EdgeInsets.all(10.0),
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: ListTile(
+                    title: Text(
+                      name,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
                       ),
+                    ),
 //                  subtitle: Text(
 //                    '${classes[posi].department}',
 //                    style: TextStyle(color: Colors.grey,
 //                      fontSize: 14.0,
 //                    ),
 //                  ),
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundColor: Colors.indigo,
-                            radius: 14.0,
-                            child: Text(
-                              '$position',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14.0,
-                              ),
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.indigo,
+                          radius: 14.0,
+                          child: Text(
+                            '$position',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.0,
                             ),
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    onTap: onCardPressed),
+              ),
+              canEdit
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => QrGenerator()
-                            //QrScan(),
-                            //ScanScreen(),
-                          ),
-                        );
-                      }),
-                ),
-                canEdit
-                    ? IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
-                    onPressed: onDeletePressed)
-                    : SizedBox(),
-                canEdit
-                    ? IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.indigo,
-                    ),
-                    onPressed: onEditPressed)
-                    : SizedBox(),
-              ],
-            ),
-          ],
-        ),
+                      onPressed: onDeletePressed)
+                  : SizedBox(),
+              canEdit
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.indigo,
+                      ),
+                      onPressed: onEditPressed)
+                  : SizedBox(),
+            ],
+          ),
+        ],
       ),
     );
   }

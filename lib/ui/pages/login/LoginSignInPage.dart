@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mmsfa_flu/ui/pages/ClassesPage.dart';
+import 'package:mmsfa_flu/ui/pages/ClassesScreen.dart';
 import 'package:mmsfa_flu/ui/pages/IntroSlider.dart';
-import 'package:mmsfa_flu/database/controller/Auth.dart';
-import 'package:mmsfa_flu/database/controller/DataBofLogin.dart';
+import 'package:mmsfa_flu/database/viewModels/Auth.dart';
+import 'package:mmsfa_flu/database/viewModels/DataBofLogin.dart';
 
 class LoginSignInPage extends StatefulWidget {
   final BaseAuth auth;
-  const LoginSignInPage({Key key,@required this.auth}) : super(key: key);
+  const LoginSignInPage({Key key, @required this.auth}) : super(key: key);
 
   @override
   _LoginSignInPageState createState() => _LoginSignInPageState();
@@ -31,11 +31,16 @@ class _LoginSignInPageState extends State<LoginSignInPage> {
 
       FirebaseUser user = await widget.auth.getCurrentUser();
       if (user != null) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => IntroSlider(isStudent: user.email.contains("@Student"),)));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => IntroSlider(
+                      isStudent: user.email.contains("@Student"),
+                    )));
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     //now i build the user interface
@@ -102,8 +107,8 @@ class _LoginSignInPageState extends State<LoginSignInPage> {
                         height: 60.0,
                       ),
                       MaterialButton(
-                        child:
-                            Text('Login', style: TextStyle(color: Colors.white)),
+                        child: Text('Login',
+                            style: TextStyle(color: Colors.white)),
                         color: Colors.indigo,
                         onPressed: () {
 //                        Navigator.of(context).pushNamed('/homepage');
@@ -139,7 +144,7 @@ class _LoginSignInPageState extends State<LoginSignInPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return ClassesPage();
+                return ClassesScreen();
               },
             ),
           );

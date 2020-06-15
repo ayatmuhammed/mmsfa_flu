@@ -34,7 +34,10 @@ class _StudentsListState extends State<StudentsList> {
 
     if (widget.myClass.studentIds != null) {
       for (int i = 0; i < (widget.myClass.studentIds.length); i++) {
-        studentReference.child(widget.myClass.studentIds[i]).onValue.listen(_onStudentAdded);
+        studentReference
+            .child(widget.myClass.studentIds[i])
+            .onValue
+            .listen(_onStudentAdded);
       }
     }
   }
@@ -65,13 +68,16 @@ class _StudentsListState extends State<StudentsList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QrGenerator(classID: widget.myClass.key),
+                    builder: (context) => QrGenerator(),
                   ),
                 );
               },
               child: Text(
                 '- QR Generate',
-                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.indigo),
+                style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.indigo),
               ),
             ),
           ],
@@ -127,7 +133,8 @@ class _StudentsListState extends State<StudentsList> {
                               ),
                             ],
                           ),
-                          onTap: () => _navigateStudentInformation(context, items[position]),
+                          onTap: () => _navigateStudentInformation(
+                              context, items[position]),
                         ),
                       ),
                       IconButton(
@@ -135,14 +142,16 @@ class _StudentsListState extends State<StudentsList> {
                           Icons.delete,
                           color: Colors.red,
                         ),
-                        onPressed: () => _deleteStudent(context, items[position], position),
+                        onPressed: () =>
+                            _deleteStudent(context, items[position], position),
                       ),
                       IconButton(
                         icon: Icon(
                           Icons.edit,
                           color: Colors.indigo,
                         ),
-                        onPressed: () => _navigateStudent(context, items[position]),
+                        onPressed: () =>
+                            _navigateStudent(context, items[position]),
                       ),
                     ],
                   ),
@@ -166,9 +175,11 @@ class _StudentsListState extends State<StudentsList> {
   void _onStudentAdded(Event event) {
     setState(() {
       try {
-        var oldStudentValue = items.singleWhere((student) => student.id == event.snapshot.key);
+        var oldStudentValue =
+            items.singleWhere((student) => student.id == event.snapshot.key);
 
-        items[items.indexOf(oldStudentValue)] = new Student.fromSnapShot(event.snapshot);
+        items[items.indexOf(oldStudentValue)] =
+            new Student.fromSnapShot(event.snapshot);
       } catch (e) {
         print('${event.snapshot.value}');
         items.add(new Student.fromSnapShot(event.snapshot));
@@ -179,7 +190,8 @@ class _StudentsListState extends State<StudentsList> {
 
   //delete need to connect to FireBase so we need to async and await the result
 
-  void _deleteStudent(BuildContext context, Student student, int position) async {
+  void _deleteStudent(
+      BuildContext context, Student student, int position) async {
     await studentReference.child(student.id).remove().then((_) {
       setState(() {
         items.removeAt(position);
@@ -194,7 +206,8 @@ class _StudentsListState extends State<StudentsList> {
     );
   }
 
-  void _navigateStudentInformation(BuildContext context, Student student) async {
+  void _navigateStudentInformation(
+      BuildContext context, Student student) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => StudentInformation(student)),
@@ -214,7 +227,11 @@ class _StudentsListState extends State<StudentsList> {
     );
     widget.myClass.studentIds.add(studentKey);
     print(widget.myClass.key);
-    FirebaseDatabase.instance.reference().child('todo').child(widget.myClass.key).update(
+    FirebaseDatabase.instance
+        .reference()
+        .child('todo')
+        .child(widget.myClass.key)
+        .update(
       {'students': widget.myClass.studentIds},
     );
     studentReference.child(studentKey).onValue.listen(_onStudentAdded);

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mmsfa_flu/database/controller/Auth.dart';
+import 'package:mmsfa_flu/database/viewModels/Auth.dart';
 import 'package:mmsfa_flu/ui/pages/login/LoginSignInPage.dart';
+
 class SplashScreen extends StatefulWidget {
   final BaseAuth baseAuth;
 
@@ -11,21 +12,22 @@ class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
+
 class _SplashScreenState extends State<SplashScreen> {
   final duration = Duration(seconds: 3);
   @override
   void initState() {
     super.initState();
     Timer(
-        duration,
-        () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginSignInPage(
-                      auth: widget.baseAuth,
-                    ),
-            ),
+      duration,
+      () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginSignInPage(
+            auth: widget.baseAuth,
+          ),
         ),
+      ),
     );
   }
 

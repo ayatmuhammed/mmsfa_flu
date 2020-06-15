@@ -1,35 +1,59 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
-class StudyClassModel{
+class StudyClassModel {
   String classId;
   String className;
+  LectureModel lastLecture;
 
   StudyClassModel(this.classId, this.className);
 
-  StudyClassModel.fromSnapshot(DocumentSnapshot snapshot):
-      classId= snapshot.documentID,
-      className= snapshot.data[ClassesCollection.CLASS_NAME_FIELD];
+  StudyClassModel.fromSnapshot(DocumentSnapshot snapshot)
+      : classId = snapshot.documentID,
+        className = snapshot.data[ClassesCollection.CLASS_NAME_FIELD],
+        lastLecture = LectureModel.fromMap(snapshot.data);
 
-  Map<String, dynamic> toJson() => {
-    ClassesCollection.CLASS_NAME_FIELD: className,
-    };
+  //lastLecture= Lecture.fromMap(snapshot.data)
+  Map<String, dynamic> toJson() {
+    final map = {ClassesCollection.CLASS_NAME_FIELD: className};
+    map.addAll(lastLecture.toJson());
+
+    return map;
+  }
 
   @override
   String toString() {
-    return 'StudyClassModel{classId: $classId, className: $className}';
+    return 'StudyClassModel{classId: $classId, className: $className, ${lastLecture.toString()}';
   }
 }
 
-
-class Lecture{
-  String lectureId;
+class LectureModel {
+  String lectureUrl;
   DateTime startDate;
-  List<String> attendedStudentRefs;
+  List<DocumentReference> attendedStudentRefs;
 
-  Lecture.fromSnapshot(DataSnapshot snapshot):
-        lectureId= snapshot.key,
-        startDate= snapshot.value["startDate"],
-        attendedStudentRefs= snapshot.value["attendedStudentRefs"];
+  LectureModel(this.lectureUrl) {
+    attendedStudentRefs = [];
+    startDate = DateTime.now();
+  }
+
+  LectureModel.fromMap(Map<String, dynamic> map)
+      : lectureUrl = map[ClassesCollection.LECTURE_URL] ?? "",
+        startDate =
+            (map[ClassesCollection.START_DATE] as Timestamp)?.toDate() ??
+                DateTime.now(),
+        attendedStudentRefs = map[ClassesCollection.ATTENDED_STUDENTS_REFS]
+                ?.cast<DocumentReference>() ??
+            [];
+
+  Map<String, dynamic> toJson() => {
+        ClassesCollection.LECTURE_URL: lectureUrl,
+        ClassesCollection.START_DATE: startDate,
+        ClassesCollection.ATTENDED_STUDENTS_REFS: attendedStudentRefs,
+      };
+
+  @override
+  String toString() {
+    return 'LectureModel{lectureUrl: $lectureUrl, startDate: $startDate, attendedStudentRefs: $attendedStudentRefs}';
+  }
 }
