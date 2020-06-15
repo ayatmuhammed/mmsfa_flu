@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:mmsfa_flu/database/controller/Auth.dart';
+import 'package:mmsfa_flu/ui/pages/ClassesPage.dart';
 import 'package:mmsfa_flu/ui/pages/login/LoginSignInPage.dart';
 import 'package:mmsfa_flu/ui/pages/login/Root_pages.dart';
-import 'ui/pages/TeacherClassesTemp.dart';
 
 //bool firstRun=true;
 //const firstRunKey= 'firstRun';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
        routes: <String ,WidgetBuilder>{
         '/landingpage':(BuildContext context)=> MyApp(),
         '/register':(BuildContext context)=> LoginSignInPage(),
-         '/homepage':(BuildContext context)=> TeacherClassesTemp(),
+         '/homepage':(BuildContext context)=> ClassesPage(),
         },
       theme: ThemeData(primaryColor: Colors.indigo),
     );
