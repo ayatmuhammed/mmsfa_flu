@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
-import 'package:mmsfa_flu/ui/pages/SplashScreen.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mmsfa_flu/database/model/StudentModel.dart';
+import 'package:mmsfa_flu/database/model/UserModel.dart';
 import 'package:mmsfa_flu/database/viewModels/Auth.dart';
+import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
+import 'package:provider/provider.dart';
+
+import 'IntroSlider.dart';
+import 'file:///D:/Projects/Flutter/studentsAttendance/lib/ui/pages/login/LoginScreen.dart';
 
 import '../ClassesScreen.dart';
 
@@ -23,28 +28,34 @@ enum AuthStatus {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  String _userId = "";
+  UserModel _userModel;
+  bool firstLogin = false;
 
   @override
   void initState() {
     super.initState();
-    widget.auth.getCurrentUser().then((user) {
+    listenToUserUpdates();
+  }
+
+  void listenToUserUpdates() {
+    widget.auth.getCurrentUserModelStream().listen((user) {
       setState(() {
         if (user != null) {
-          _userId = user?.uid;
-        }
+          _userModel = user;
+        } else
+          firstLogin = true;
+
         authStatus =
-            user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+            user == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
       });
     });
   }
 
   Widget _buildWaitingScreen() {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      ),
+      body: Center(
+          child:
+              SpinKitWave(color: Colors.indigo, type: SpinKitWaveType.center)),
     );
   }
 
@@ -55,16 +66,22 @@ class _RootPageState extends State<RootPage> {
         return _buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return ClassesScreen();
-//        return  SplashScreen(
-//          baseAuth: widget.auth,
-//        );
+        return SplashScreen(
+          baseAuth: widget.auth,
+        );
         break;
       case AuthStatus.LOGGED_IN:
-        if (_userId.length > 0 && _userId != null) {
-          return ClassesScreen();
-        } else
-          return _buildWaitingScreen();
+        return Provider.value(
+          value: _userModel,
+          child: firstLogin
+              ? IntroSlider(
+                  isStudent: _userModel is StudentModel,
+                  onTabDone: () => setState(() {
+                    firstLogin = false;
+                  }),
+                )
+              : ClassesScreen(),
+        );
         break;
       default:
         return _buildWaitingScreen();

@@ -6,15 +6,12 @@ import 'package:mmsfa_flu/main.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
 class ClassesViewModel {
-  final documentId =
-      'kNXrxODnpYQAQXyejFsysa3Pgmp1'; // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
-
   CollectionReference classesCollection;
 
-  ClassesViewModel() {
+  ClassesViewModel(String userId) {
     classesCollection = Firestore.instance
         .collection(TeachersCollection.NAME)
-        .document(documentId)
+        .document(userId)
         .collection(ClassesCollection.NAME);
   }
 
@@ -35,7 +32,7 @@ class ClassesViewModel {
     await classesCollection.document(documentId).delete();
   }
 
-  Stream<List<StudyClassModel>> getClasses(UserModel userModel) async* {
+  Stream<List<StudyClassModel>> getClassesStream(UserModel userModel) async* {
     if (userModel is StudentModel) {
       List<StudyClassModel> classes = List();
 

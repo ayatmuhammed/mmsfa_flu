@@ -5,18 +5,25 @@ class StudyClassModel {
   String classId;
   String className;
   LectureModel lastLecture;
+  List<DocumentReference> studentRefs = [];
 
   StudyClassModel(this.classId, this.className);
 
   StudyClassModel.fromSnapshot(DocumentSnapshot snapshot)
       : classId = snapshot.documentID,
         className = snapshot.data[ClassesCollection.CLASS_NAME_FIELD],
+        studentRefs = snapshot.data[ClassesCollection.STUDENTS_REFS]
+                ?.cast<DocumentReference>() ??
+            [],
         lastLecture = LectureModel.fromMap(snapshot.data);
 
   //lastLecture= Lecture.fromMap(snapshot.data)
   Map<String, dynamic> toJson() {
-    final map = {ClassesCollection.CLASS_NAME_FIELD: className};
-    map.addAll(lastLecture.toJson());
+    final map = {
+      ClassesCollection.CLASS_NAME_FIELD: className,
+      ClassesCollection.STUDENTS_REFS: studentRefs,
+    };
+    if (lastLecture != null) map.addAll(lastLecture.toJson());
 
     return map;
   }

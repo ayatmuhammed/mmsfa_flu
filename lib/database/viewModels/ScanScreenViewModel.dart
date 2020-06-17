@@ -10,12 +10,13 @@ class ScanScreenViewModel {
   String lectureUrl;
   bool isLoading = false;
   DocumentReference classRef;
+  final String userId;
 
-  ScanScreenViewModel(this.classRef);
+  ScanScreenViewModel(this.classRef, this.userId);
 
   Future<bool> selectAndScanImage() async {
     try {
-      String encodedMsg = await scanner.scanPhoto();
+      String encodedMsg = await scanner.scan();
 
       final parts = encodedMsg.split(",");
       if (parts[0] == classRef.documentID) {
@@ -25,10 +26,16 @@ class ScanScreenViewModel {
         if (_qrIsValid(studyClass, parts)) {
           final studentReference = Firestore.instance
               .collection(StudentsCollection.NAME)
-              .document("kNXrxODnpYQAQXyejFsysa3Pgmp1");
+              .document(userId);
 
-          studyClass.lastLecture.attendedStudentRefs.add(studentReference);
-          await classRef.updateData(studyClass.lastLecture.toJson());
+          final attendedStudents = studyClass.lastLecture.attendedStudentRefs;
+          if (attendedStudents
+                  .where((e) => e.path == studentReference.path)
+                  .length <
+              1) {
+            studyClass.lastLecture.attendedStudentRefs.add(studentReference);
+            await classRef.updateData(studyClass.lastLecture.toJson());
+          }
 
           lectureUrl = parts[1];
           return true;
@@ -43,8 +50,10 @@ class ScanScreenViewModel {
 
   bool _qrIsValid(StudyClassModel studyClass, List<String> parts) {
     final startDate = studyClass.lastLecture.startDate;
+    final qrTimeDiff = startDate.difference(DateTime.parse(parts[2])).inSeconds;
+
     return studyClass.lastLecture.lectureUrl == parts[1] &&
-        startDate.difference(DateTime.parse(parts[2])).inSeconds < 1 &&
-        startDate.difference(DateTime.now()).inMinutes < 20;
+        (qrTimeDiff < 1 && qrTimeDiff > -1) &&
+        DateTime.now().difference(startDate).inMinutes < 20;
   }
 }

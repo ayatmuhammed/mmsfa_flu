@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
+import 'package:mmsfa_flu/database/viewModels/Auth.dart';
 import 'package:mmsfa_flu/database/viewModels/ClassesViewModel.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
@@ -15,7 +16,9 @@ import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
 import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
+import 'package:mmsfa_flu/ui/pages/student/StudentsList.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
+import 'package:provider/provider.dart';
 
 import '../../main.dart';
 
@@ -25,12 +28,15 @@ class ClassesScreen extends StatefulWidget {
 }
 
 class _ClassesScreenState extends State<ClassesScreen> {
-  final isTeacher = false; // TODO: change this
-  // TODO: change this
-  final documentId =
-      'kNXrxODnpYQAQXyejFsysa3Pgmp1'; // teacher: 9XaPOZ6oREN0or64tjcynOuEVHk2, student: kNXrxODnpYQAQXyejFsysa3Pgmp1
+  ClassesViewModel viewModel;
+  UserModel userModel;
 
-  ClassesViewModel viewModel = ClassesViewModel();
+  @override
+  void didChangeDependencies() {
+    userModel = Provider.of<UserModel>(context);
+    viewModel = ClassesViewModel(userModel.userId);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,38 +51,8 @@ class _ClassesScreenState extends State<ClassesScreen> {
           ),
           centerTitle: true,
         ),
-        body: FutureBuilder<DocumentSnapshot>(
-          future: Firestore.instance
-              .collection(
-                  isTeacher ? TeachersCollection.NAME : StudentsCollection.NAME)
-              .document(documentId)
-              .get(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(
-                child: SpinKitChasingDots(
-                  color: Colors.indigo,
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            } else if (!snapshot.hasData) {
-              return Center(child: Text("Error: No data"));
-            } else {
-              DocumentSnapshot documentSnapshot = snapshot.data;
-              logger.i("documentSnapshot: ${documentSnapshot.data}");
-
-              UserModel userModel = isTeacher
-                  ? TeacherModel.fromSnapshot(documentSnapshot)
-                  : StudentModel.fromSnapshot(documentSnapshot);
-
-              logger.i(userModel.toString());
-
-              return ClassesList(userModel: userModel, viewModel: viewModel);
-            }
-          },
-        ),
-        floatingActionButton: isTeacher
+        body: ClassesList(userModel: userModel, viewModel: viewModel),
+        floatingActionButton: userModel is TeacherModel
             ? FloatingActionButton(
                 child: Icon(
                   Icons.add,
@@ -110,7 +86,7 @@ class ClassesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<StudyClassModel>>(
-      stream: viewModel.getClasses(userModel),
+      stream: viewModel.getClassesStream(userModel),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -120,7 +96,7 @@ class ClassesList extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           return Center(child: Text("Error: ${snapshot.error}"));
-        } else if (!snapshot.hasData) {
+        } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
           return Center(child: Text("You have no classes!"));
         } else {
           List<StudyClassModel> studentClasses = snapshot.data;
@@ -143,10 +119,11 @@ class ClassesList extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => userModel is TeacherModel
-                            ? QrGenerator(
-                                classModel: studyClass,
-                                userId: userModel.userId,
-                              )
+                            ? StudentsList(studyClass)
+//                        QrGenerator(
+//                                classModel: studyClass,
+//                                userId: userModel.userId,
+//                              )
                             : ScanScreen(
                                 classRef: getClassRef(index),
                               )),

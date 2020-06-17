@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mmsfa_flu/database/model/Student.dart';
+import 'package:mmsfa_flu/database/model/StudentModel.dart';
 
 class StudentInformation extends StatefulWidget {
-  final Student student;
-  StudentInformation(this.student);
+  final StudentModel studentModel;
+  StudentInformation(this.studentModel);
   @override
   _StudentInformationState createState() => _StudentInformationState();
 }
 
-
-final studentReference=FirebaseDatabase.instance.reference().child('student');
-
+final studentReference = FirebaseDatabase.instance.reference().child('student');
 
 class _StudentInformationState extends State<StudentInformation> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,39 +24,44 @@ class _StudentInformationState extends State<StudentInformation> {
         ),
         backgroundColor: Colors.indigo,
         centerTitle: true,
-        title: Text('details of student',style: TextStyle(fontSize: 18.0)),
+        title: Text('details of student', style: TextStyle(fontSize: 18.0)),
       ),
       backgroundColor: Colors.white,
       body: Container(
-        margin: EdgeInsets.only(top:15.0 ),
+        margin: EdgeInsets.only(top: 15.0),
         alignment: Alignment.center,
         child: Column(
           children: <Widget>[
-            Text( widget.student.name,
+            Text(
+              widget.studentModel.username,
               maxLines: 4,
-              style: TextStyle(fontSize:16.0,color: Colors.indigo ),),
+              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+            ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
-
-            Text( widget.student.section,
+            Text(
+              widget.studentModel.department,
               maxLines: 4,
-              style: TextStyle(fontSize:16.0,color: Colors.indigo ),),
+              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+            ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
-
-            Text( widget.student.branch,
+            Text(
+              widget.studentModel.branch,
               maxLines: 4,
-              style: TextStyle(fontSize:16.0,color: Colors.indigo ),),
+              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+            ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
-
-            Text( widget.student.stage,
+            Text(
+              widget.studentModel.stage.toString(),
               maxLines: 4,
-              style: TextStyle(fontSize:16.0,color: Colors.indigo ),),
+              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+            ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
-
-            Text( widget.student.lecture,
+            Text(
+              "lecture",
               maxLines: 4,
-              style: TextStyle(fontSize:16.0,color: Colors.indigo ),),
+              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+            ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
-
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
 import 'UserModel.dart';
 
@@ -10,18 +10,31 @@ class StudentModel extends UserModel {
   List<DocumentReference> classRefs;
 
   StudentModel.fromSnapshot(DocumentSnapshot snapshot)
-      :department = snapshot.data["department"] ?? '',
-        branch = snapshot.data["branch"] ?? '',
-        stage = snapshot.data["stage"] ?? 0,
-        classRefs = snapshot.data["classRefs"].cast<DocumentReference>() ?? [],
-        super(
-          userId: snapshot.documentID,
-          username: snapshot.data["studentName"] ?? '');
+      : department = snapshot.data[StudentsCollection.CLASS_DEPARTMENT_FIELD] ??
+            'Unknown',
+        branch =
+            snapshot.data[StudentsCollection.CLASS_BRANCH_FIELD] ?? 'Unknown',
+        stage = snapshot.data[StudentsCollection.CLASS_STAGE_FIELD] ?? -1,
+        classRefs = snapshot.data[StudentsCollection.CLASS_REFS_FIELD]
+                ?.cast<DocumentReference>() ??
+            [],
+        super.fromSnapshot(snapshot);
 
+  Map<String, dynamic> toJson() {
+    final map = {
+      StudentsCollection.CLASS_DEPARTMENT_FIELD: department,
+      StudentsCollection.CLASS_BRANCH_FIELD: branch,
+      StudentsCollection.CLASS_STAGE_FIELD: stage,
+      StudentsCollection.CLASS_REFS_FIELD: classRefs,
+    };
+
+    map.addAll(super.toJson());
+
+    return map;
+  }
 
   @override
   String toString() {
     return 'StudentModel{studentId: $userId, studentName: $username, department: $department, branch: $branch, stage: $stage, classRefs: $classRefs}';
   }
-
 }

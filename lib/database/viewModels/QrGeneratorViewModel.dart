@@ -7,16 +7,15 @@ import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 class QrGeneratorViewModel {
-  final teacherId = '9XaPOZ6oREN0or64tjcynOuEVHk2'; // TODO: change
   bool isLoading = false;
   Uint8List bytes = Uint8List(0);
   final StudyClassModel classModel;
   DocumentReference classRef;
 
-  QrGeneratorViewModel(this.classModel) {
+  QrGeneratorViewModel(this.classModel, String userId) {
     classRef = classRef = Firestore.instance
         .collection(TeachersCollection.NAME)
-        .document(teacherId)
+        .document(userId)
         .collection(ClassesCollection.NAME)
         .document(classModel.classId);
   }
@@ -41,7 +40,6 @@ class QrGeneratorViewModel {
     classModel.lastLecture = lecture;
     try {
       await classRef.updateData(classModel.lastLecture.toJson());
-
       _generateBarCode();
     } on Exception catch (e) {
       throw e;

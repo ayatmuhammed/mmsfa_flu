@@ -1,16 +1,24 @@
 //her i show all student that i will added it
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/database/model/class.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mmsfa_flu/database/model/Student.dart';
+import 'package:mmsfa_flu/database/model/StudentModel.dart';
+import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
+import 'package:mmsfa_flu/database/model/UserModel.dart';
+import 'package:mmsfa_flu/database/viewModels/StudentsViewModel.dart';
+import 'package:mmsfa_flu/ui/dialog/AddStudentBottomSheet.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/student/AddStudentInformation.dart';
 import 'package:mmsfa_flu/ui/pages/student/StudentInformation.dart';
+import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
+import 'package:provider/provider.dart';
 
 class StudentsList extends StatefulWidget {
-  final Todo myClass;
+  final StudyClassModel classModel;
 
-  const StudentsList(this.myClass);
+  const StudentsList(this.classModel);
 
   @override
   _StudentsListState createState() => _StudentsListState();
@@ -19,146 +27,118 @@ class StudentsList extends StatefulWidget {
 final studentReference = FirebaseDatabase.instance.reference().child('student');
 
 class _StudentsListState extends State<StudentsList> {
-  //the user that i takes it from database i put them in list
-  List<Student> items;
-
-  // i need to FireBase realtime TO help me in delete and update the in formation so i use stream
-
-  //his means when i add new user to list it is auto update and add the user
-  // now i want to init. th database i means the database is download automatically
-
-  @override
-  void initState() {
-    super.initState();
-    items = new List();
-
-    if (widget.myClass.studentIds != null) {
-      for (int i = 0; i < (widget.myClass.studentIds.length); i++) {
-        studentReference
-            .child(widget.myClass.studentIds[i])
-            .onValue
-            .listen(_onStudentAdded);
-      }
-    }
-  }
-
-  //it is cancel to the subscription it is closed the database
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
 //now i design the ui to the user
+  StudentsViewModel viewModel;
+
+  @override
+  void didChangeDependencies() {
+    final userId = context.read<UserModel>().userId;
+    viewModel = StudentsViewModel(widget.classModel, userId);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Student DB',
       home: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop('/homepage'),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              color: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QrGenerator(),
-                  ),
-                );
-              },
-              child: Text(
-                '- QR Generate',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.indigo),
-              ),
-            ),
-          ],
-          backgroundColor: Colors.indigo,
-          title: Text('Your Student', style: TextStyle(color: Colors.white)),
-//          title:Text('Add Your Student',style: TextStyle(color: Colors.white)
-//          ),
-          centerTitle: true,
-        ),
-        body: Center(
-          child: ListView.builder(
-            itemCount: items.length,
-            padding: EdgeInsets.only(top: 15.0),
-            itemBuilder: (context, position) {
-              return Column(
-                children: <Widget>[
-                  Divider(color: Colors.indigo, height: 6.0),
-                  Row(
+        appBar: buildAppBar(context),
+        body: StreamBuilder<List<StudentModel>>(
+          stream: viewModel.getClassStudentsStream(),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<StudentModel>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: SpinKitChasingDots(
+                  color: Colors.indigo,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+              return Center(child: Text("You have no students!"));
+            }
+            final items = snapshot.data;
+
+            return Center(
+              child: ListView.builder(
+                itemCount: items.length,
+                padding: EdgeInsets.only(top: 15.0),
+                itemBuilder: (context, position) {
+                  return Column(
                     children: <Widget>[
-                      Expanded(
-                        child: ListTile(
-                          //now i want to display the name of user in list
-                          title: Text(
-                            '${items[position].name}',
-                            style: TextStyle(
-                              color: Colors.indigo,
-                              backgroundColor: Colors.purple[50],
-                              fontSize: 22.0,
-                            ),
-                          ),
-                          subtitle: Text(
-                            '${items[position].section}',
-                            style: TextStyle(
-                              color: Colors.amber,
-                              //  backgroundColor: Colors.purple[50],
-                              fontSize: 14.0,
-                            ),
-                          ),
-                          leading: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              CircleAvatar(
-                                backgroundColor: Colors.indigo,
-                                radius: 14.0,
-                                child: Text(
-                                  '${position + 1}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    //  backgroundColor: Colors.purple[50],
-                                    fontSize: 14.0,
-                                  ),
+                      Divider(color: Colors.indigo, height: 6.0),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: ListTile(
+                              //now i want to display the name of user in list
+                              title: Text(
+                                '${items[position].username}',
+                                style: TextStyle(
+                                  color: Colors.indigo,
+                                  backgroundColor: Colors.purple[50],
+                                  fontSize: 22.0,
                                 ),
                               ),
-                            ],
+                              subtitle: Text(
+                                '${items[position].department}',
+                                style: TextStyle(
+                                  color: Colors.amber,
+                                  //  backgroundColor: Colors.purple[50],
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                              leading: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    backgroundColor: Colors.indigo,
+                                    radius: 14.0,
+                                    child: Text(
+                                      '${position + 1}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        //  backgroundColor: Colors.purple[50],
+                                        fontSize: 14.0,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                _navigateStudentInformation(
+                                    context, items[position]);
+                              },
+                            ),
                           ),
-                          onTap: () => _navigateStudentInformation(
-                              context, items[position]),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () =>
-                            _deleteStudent(context, items[position], position),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.indigo,
-                        ),
-                        onPressed: () =>
-                            _navigateStudent(context, items[position]),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              _deleteStudent(context, items[position]);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.indigo,
+                            ),
+                            onPressed: () {
+//                              _navigateStudent(context, items[position])
+                            },
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                ],
-              );
-            },
-          ),
+                  );
+                },
+              ),
+            );
+          },
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(
@@ -166,37 +146,50 @@ class _StudentsListState extends State<StudentsList> {
             color: Colors.white,
           ),
           backgroundColor: Colors.indigo,
-          onPressed: () => _createNewStudent(context),
+          onPressed: () => _addStudent(context),
         ),
       ),
     );
   }
 
-  void _onStudentAdded(Event event) {
-    setState(() {
-      try {
-        var oldStudentValue =
-            items.singleWhere((student) => student.id == event.snapshot.key);
-
-        items[items.indexOf(oldStudentValue)] =
-            new Student.fromSnapShot(event.snapshot);
-      } catch (e) {
-        print('${event.snapshot.value}');
-        items.add(new Student.fromSnapShot(event.snapshot));
-        print('_onStudentAdded $items');
-      }
-    });
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: true,
+      leading: new IconButton(
+        icon: new Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () => Navigator.of(context).pop('/homepage'),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    QrGenerator(classModel: widget.classModel),
+              ),
+            );
+          },
+          child: Text(
+            '- QR Generate',
+            style: TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.indigo),
+          ),
+        ),
+      ],
+      backgroundColor: Colors.indigo,
+      title: Text('Your Students', style: TextStyle(color: Colors.white)),
+//          title:Text('Add Your Student',style: TextStyle(color: Colors.white)
+//          ),
+      centerTitle: true,
+    );
   }
 
-  //delete need to connect to FireBase so we need to async and await the result
-
-  void _deleteStudent(
-      BuildContext context, Student student, int position) async {
-    await studentReference.child(student.id).remove().then((_) {
-      setState(() {
-        items.removeAt(position);
-      });
-    });
+  void _deleteStudent(BuildContext context, StudentModel studentModel) async {
+    viewModel.removeStudent(studentModel);
   }
 
   void _navigateStudent(BuildContext context, Student student) async {
@@ -207,33 +200,20 @@ class _StudentsListState extends State<StudentsList> {
   }
 
   void _navigateStudentInformation(
-      BuildContext context, Student student) async {
+      BuildContext context, StudentModel studentModel) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => StudentInformation(student)),
+      MaterialPageRoute(builder: (context) => StudentInformation(studentModel)),
     );
   }
 
-//when i want to create new user
+  void _addStudent(BuildContext context) async {
+    final studentEmail = await showModalBottomSheet<String>(
+      context: context,
+      builder: (BuildContext context) => AddStudentBottomSheet(),
+    );
 
-  void _createNewStudent(BuildContext context) async {
-    String studentKey = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddStudentInformation(
-          Student(null, '', '', '', '', ''),
-        ),
-      ),
-    );
-    widget.myClass.studentIds.add(studentKey);
-    print(widget.myClass.key);
-    FirebaseDatabase.instance
-        .reference()
-        .child('todo')
-        .child(widget.myClass.key)
-        .update(
-      {'students': widget.myClass.studentIds},
-    );
-    studentReference.child(studentKey).onValue.listen(_onStudentAdded);
+    if (studentEmail == null || studentEmail.isEmpty) return;
+    viewModel.addStudent(studentEmail);
   }
 }

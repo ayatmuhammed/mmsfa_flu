@@ -5,18 +5,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:mmsfa_flu/database/model/UserModel.dart';
 import 'package:mmsfa_flu/database/viewModels/QrGeneratorViewModel.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/ui/cards/StudentCard.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
+import 'package:provider/provider.dart';
 
 class QrGenerator extends StatefulWidget {
   final StudyClassModel classModel;
-  final String userId;
 
-  const QrGenerator({Key key, @required this.classModel, @required this.userId})
-      : super(key: key);
+  const QrGenerator({Key key, @required this.classModel}) : super(key: key);
 
   @override
   _QrGeneratorState createState() => _QrGeneratorState();
@@ -27,10 +27,12 @@ class _QrGeneratorState extends State<QrGenerator> {
   QrGeneratorViewModel viewModel;
 
   @override
-  initState() {
-    super.initState();
-    viewModel = QrGeneratorViewModel(widget.classModel);
+  void didChangeDependencies() {
+    final userId = context.read<UserModel>().userId;
+    viewModel = QrGeneratorViewModel(widget.classModel, userId);
     this._inputController = new TextEditingController();
+
+    super.didChangeDependencies();
   }
 
   @override

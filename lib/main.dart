@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:mmsfa_flu/database/viewModels/Auth.dart';
 import 'package:mmsfa_flu/ui/pages/ClassesScreen.dart';
-import 'package:mmsfa_flu/ui/pages/login/LoginSignInPage.dart';
 import 'package:mmsfa_flu/ui/pages/login/Root_pages.dart';
 
 //bool firstRun=true;
@@ -22,11 +21,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: RootPage(auth: Auth()),
-      routes: <String, WidgetBuilder>{
-        '/landingpage': (BuildContext context) => MyApp(),
-        '/register': (BuildContext context) => LoginSignInPage(),
-        '/homepage': (BuildContext context) => ClassesScreen(),
-      },
       theme: ThemeData(primaryColor: Colors.indigo),
     );
   }

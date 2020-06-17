@@ -1,13 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 
-import 'ClassesScreen.dart';
-
 class IntroSlider extends StatelessWidget {
   final bool isStudent;
+  final Function onTabDone;
 
-  const IntroSlider({Key key, this.isStudent}) : super(key: key);
+  const IntroSlider({Key key, this.isStudent, this.onTabDone})
+      : super(key: key);
 
   List<PageViewModel> getStudentPages() => [
         PageViewModel(
@@ -119,12 +120,7 @@ class IntroSlider extends StatelessWidget {
           builder: (context) => IntroViewsFlutter(
                 isStudent ? getStudentPages() : getTeacherPages(),
                 onTapDoneButton: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClassesScreen(),
-                    ),
-                  );
+                  onTabDone();
                 },
                 pageButtonTextStyles: TextStyle(
                   color: Colors.indigo,
