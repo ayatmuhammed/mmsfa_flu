@@ -192,30 +192,32 @@ class _DrawerCompState extends State<DrawerComp> {
                 onTap: () async {
                   await cameraConnect();
                 },
-                child: _isImageUploading
-                    ? Container(
-                        transform: Matrix4.translationValues(0.0, -38.0, 0.0),
-                        child: Lottie.asset("assets/loading.json",
-                            height: 240, width: 240),
-                      )
-                    : ClipOval(
-                        child: Image.network(
-                          userModel.imageUrl,
-                          width: 150,
-                          height: 150,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Container(
-                              transform:
-                                  Matrix4.translationValues(0.0, -38.0, 0.0),
-                              child: Lottie.asset("assets/loading.json",
-                                  height: 240, width: 240),
-                            );
-                          },
-                        ),
+                child: ClipOval(
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    decoration:
+                        BoxDecoration(color: Colors.white10, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 2,
+                        spreadRadius: 1,
+                        offset: Offset(0, 1),
                       ),
+                    ]),
+                    child: _isImageUploading
+                        ? Lottie.asset("assets/loading.json")
+                        : Image.network(
+                            userModel.imageUrl,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Lottie.asset("assets/loading.json");
+                            },
+                          ),
+                  ),
+                ),
               ),
             ),
             Positioned(
