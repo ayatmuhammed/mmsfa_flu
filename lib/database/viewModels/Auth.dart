@@ -53,7 +53,7 @@ class Auth implements BaseAuth {
               email: email, password: password))
           .user;
 
-      if (user != null) return "couldn't register the user";
+      if (user == null) return "couldn't register the user";
 
       return null;
     } on Exception catch (e) {

@@ -81,31 +81,25 @@ class _StudentsListState extends State<StudentsList> {
                                   fontSize: 22.0,
                                 ),
                               ),
-                              subtitle: Text(
-                                '${items[position].department}',
-                                style: TextStyle(
-                                  color: Colors.amber,
-                                  //  backgroundColor: Colors.purple[50],
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                              leading: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    backgroundColor: Colors.indigo,
-                                    radius: 14.0,
-                                    child: Text(
-                                      '${position + 1}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        //  backgroundColor: Colors.purple[50],
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
+//                              subtitle: Text(
+//                                '${items[position].department}',
+//                                style: TextStyle(
+//                                  color: Colors.amber,
+//                                  //  backgroundColor: Colors.purple[50],
+//                                  fontSize: 14.0,
+//                                ),
+//                              ),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.indigo,
+                                radius: 14.0,
+                                child: Text(
+                                  '${position + 1}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    //  backgroundColor: Colors.purple[50],
+                                    fontSize: 14.0,
                                   ),
-                                ],
+                                ),
                               ),
                               onTap: () {
                                 _navigateStudentInformation(
@@ -122,15 +116,15 @@ class _StudentsListState extends State<StudentsList> {
                               _deleteStudent(context, items[position]);
                             },
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.indigo,
-                            ),
-                            onPressed: () {
-//                              _navigateStudent(context, items[position])
-                            },
-                          ),
+//                          IconButton(
+//                            icon: Icon(
+//                              Icons.edit,
+//                              color: Colors.indigo,
+//                            ),
+//                            onPressed: () {
+////                              _navigateStudent(context, items[position])
+//                            },
+//                          ),
                         ],
                       ),
                     ],
@@ -201,10 +195,10 @@ class _StudentsListState extends State<StudentsList> {
 
   void _navigateStudentInformation(
       BuildContext context, StudentModel studentModel) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => StudentInformation(studentModel)),
-    );
+//    await Navigator.push(
+//      context,
+//      MaterialPageRoute(builder: (context) => StudentInformation(studentModel)),
+//    );
   }
 
   void _addStudent(BuildContext context) async {

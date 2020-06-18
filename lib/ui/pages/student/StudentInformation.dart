@@ -38,23 +38,23 @@ class _StudentInformationState extends State<StudentInformation> {
               style: TextStyle(fontSize: 16.0, color: Colors.indigo),
             ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
-            Text(
-              widget.studentModel.department,
-              maxLines: 4,
-              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
-            ),
-            Padding(padding: EdgeInsets.only(top: 8.0)),
-            Text(
-              widget.studentModel.branch,
-              maxLines: 4,
-              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
-            ),
-            Padding(padding: EdgeInsets.only(top: 8.0)),
-            Text(
-              widget.studentModel.stage.toString(),
-              maxLines: 4,
-              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
-            ),
+//            Text(
+//              widget.studentModel.department,
+//              maxLines: 4,
+//              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+//            ),
+//            Padding(padding: EdgeInsets.only(top: 8.0)),
+//            Text(
+//              widget.studentModel.branch,
+//              maxLines: 4,
+//              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+//            ),
+//            Padding(padding: EdgeInsets.only(top: 8.0)),
+//            Text(
+//              widget.studentModel.stage.toString(),
+//              maxLines: 4,
+//              style: TextStyle(fontSize: 16.0, color: Colors.indigo),
+//            ),
             Padding(padding: EdgeInsets.only(top: 8.0)),
             Text(
               "lecture",

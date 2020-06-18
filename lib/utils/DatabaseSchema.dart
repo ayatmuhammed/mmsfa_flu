@@ -7,9 +7,9 @@ class UsersCollection {
 class StudentsCollection {
   static const NAME = "students";
   static const CLASS_REFS_FIELD = "classRefs";
-  static const CLASS_DEPARTMENT_FIELD = "department";
-  static const CLASS_BRANCH_FIELD = "branch";
-  static const CLASS_STAGE_FIELD = "stage";
+//  static const CLASS_DEPARTMENT_FIELD = "department";
+//  static const CLASS_BRANCH_FIELD = "branch";
+//  static const CLASS_STAGE_FIELD = "stage";
 }
 
 class TeachersCollection {

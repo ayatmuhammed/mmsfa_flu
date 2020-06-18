@@ -39,8 +39,13 @@ class _DrawerCompState extends State<DrawerComp> {
     setState(() {
       _isImageUploading = true;
     });
-    StorageReference storageReference = FirebaseStorage.instance.ref().child(
-        '${userModel is StudentModel ? StudentsCollection.NAME : TeachersCollection.NAME}/${userModel.userId}');
+    final collectionName = userModel is StudentModel
+        ? StudentsCollection.NAME
+        : TeachersCollection.NAME;
+
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('$collectionName/${userModel.userId}');
     StorageUploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.onComplete;
     print('File Uploaded');
@@ -48,7 +53,7 @@ class _DrawerCompState extends State<DrawerComp> {
       userModel.imageUrl = fileURL;
 
       await Firestore.instance
-          .collection(StudentsCollection.NAME)
+          .collection(collectionName)
           .document(userModel.userId)
           .updateData(userModel.toJson());
 
