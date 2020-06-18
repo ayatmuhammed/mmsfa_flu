@@ -1,17 +1,21 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
 import 'package:mmsfa_flu/database/viewModels/Auth.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/login/LoginScreen.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerComp extends StatefulWidget {
   @override
@@ -21,15 +25,37 @@ class DrawerComp extends StatefulWidget {
 class _DrawerCompState extends State<DrawerComp> {
   UserModel userModel;
   TextEditingController usernameController;
+  bool _isImageUploading = false;
 
-  File image;
   cameraConnect() async {
     print('Picker is Called');
     File img = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (img != null) {
-      image = img;
-      setState(() {});
+      await uploadFile(img);
     }
+  }
+
+  Future uploadFile(File image) async {
+    setState(() {
+      _isImageUploading = true;
+    });
+    StorageReference storageReference = FirebaseStorage.instance.ref().child(
+        '${userModel is StudentModel ? StudentsCollection.NAME : TeachersCollection.NAME}/${userModel.userId}');
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) async {
+      userModel.imageUrl = fileURL;
+
+      await Firestore.instance
+          .collection(StudentsCollection.NAME)
+          .document(userModel.userId)
+          .updateData(userModel.toJson());
+
+      setState(() {
+        _isImageUploading = false;
+      });
+    });
   }
 
   @override
@@ -41,114 +67,168 @@ class _DrawerCompState extends State<DrawerComp> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Container(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+    final imageTop = MediaQuery.of(context).size.height * 0.15;
+
+    return SafeArea(
+      child: Drawer(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 2,
+                        spreadRadius: 1,
+                        offset: Offset(0, 1),
+                      ),
+                    ],
+                    gradient: LinearGradient(
+                        colors: <Color>[
+                          Color(0xff141E30),
+                          Color(0xff243B55),
+                        ],
+                        begin: AlignmentDirectional.topCenter,
+                        end: AlignmentDirectional.bottomCenter),
+                  ),
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15.0, top: 10.0),
-                  child: Text(
-                    'Profile',
-                    style: TextStyle(color: Colors.indigo, fontSize: 18.0),
+                  padding: EdgeInsets.only(
+                    top: 100.0,
+                    left: 32.0,
+                    right: 32.0,
                   ),
-                ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                CircleAvatar(
-                  backgroundColor: Colors.indigo[100],
-                  child: FlatButton(
-                    onPressed: () {
-                      Image.file(image);
+                  child: TextField(
+                    controller: usernameController,
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87),
+                    onSubmitted: (value) async {
+                      userModel.username = value;
+                      final collectionName = userModel is StudentModel
+                          ? StudentsCollection.NAME
+                          : TeachersCollection.NAME;
+
+                      await Firestore.instance
+                          .collection(collectionName)
+                          .document(userModel.userId)
+                          .updateData(userModel.toJson());
                     },
-                    child: Icon(Icons.image),
                   ),
-                  radius: 60.0,
                 ),
-                SizedBox(
-                  height: 32.0,
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 24.0,
+                    left: 32.0,
+                    right: 32.0,
+                  ),
+                  child: Text(
+                    userModel.email,
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54),
+                  ),
                 ),
-                TextField(
-                  controller: usernameController,
-                  style: TextStyle(
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo),
-                  onSubmitted: (value) async {
-                    userModel.username = value;
-                    final collectionName = userModel is StudentModel
-                        ? StudentsCollection.NAME
-                        : TeachersCollection.NAME;
-
-                    await Firestore.instance
-                        .collection(collectionName)
-                        .document(userModel.userId)
-                        .updateData(userModel.toJson());
-
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text("Username has changed successfully")));
-                  },
+                Expanded(
+                  child: Opacity(
+                    opacity: 1,
+                    child: Container(
+                      padding: EdgeInsets.all(48.0),
+                      child: Lottie.asset("assets/student.json"),
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  height: 12.0,
-                ),
-                Text(
-                  userModel.email,
-                  style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Divider(
-                  color: Colors.grey,
-                  height: 10.0,
-                ),
-                SizedBox(
-                  height: 2.0,
-                ),
-                FlatButton(
-                  onPressed: () async {
-//                    SharedPreferences prefs =
-//                        await SharedPreferences.getInstance();
-//                    await prefs.remove('userPreference');
-//                    await Future.delayed(Duration(seconds: 2));
-//
-//                    Navigator.of(context).pushAndRemoveUntil(
-//                      // the new route
-//                      MaterialPageRoute(
-//                        builder: (BuildContext context) => SplashScreen(
-//                          baseAuth: Auth(),
-//                        ),
-//                      ),
-//                      (Route route) => false,
-//                    );
-
+                GestureDetector(
+                  onTap: () async {
                     await FirebaseAuth.instance.signOut();
                   },
-                  child: Text(
-                    '-Logout',
-                    style: TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.indigo),
+                  child: Container(
+                    color: Colors.black.withAlpha(20),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 14.0, horizontal: 28.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6.0),
+                          child: RotatedBox(
+                            quarterTurns: 2,
+                            child: Icon(
+                              FontAwesomeIcons.signOutAlt,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                        Text(
+                          'Logout',
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87),
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
+            Positioned(
+              top: imageTop,
+              child: GestureDetector(
+                onTap: () async {
+                  await cameraConnect();
+                },
+                child: _isImageUploading
+                    ? Container(
+                        transform: Matrix4.translationValues(0.0, -38.0, 0.0),
+                        child: Lottie.asset("assets/loading.json",
+                            height: 240, width: 240),
+                      )
+                    : ClipOval(
+                        child: Image.network(
+                          userModel.imageUrl,
+                          width: 150,
+                          height: 150,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              transform:
+                                  Matrix4.translationValues(0.0, -38.0, 0.0),
+                              child: Lottie.asset("assets/loading.json",
+                                  height: 240, width: 240),
+                            );
+                          },
+                        ),
+                      ),
+              ),
+            ),
+            Positioned(
+              top: 32,
+              child: Text(
+                'User Profile',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -35,6 +35,8 @@ dependencies:
   smart_flare: ^0.2.8
   logger: ^0.9.1
   url_launcher: ^5.4.10
+  font_awesome_flutter: ^8.8.1
+  lottie: ^0.4.0+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2

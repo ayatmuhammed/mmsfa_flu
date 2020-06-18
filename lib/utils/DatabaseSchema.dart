@@ -1,6 +1,7 @@
 class UsersCollection {
   static const EMAIL_FIELD = "email";
   static const USERNAME_FIELD = "username";
+  static const IMAGE_URL_FIELD = "imageUrl";
 }
 
 class StudentsCollection {
