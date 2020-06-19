@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
-import 'package:mmsfa_flu/main.dart';
+
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
 class ClassesViewModel {

@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
-import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
 
 class ClassCard extends StatelessWidget {
   final int position;

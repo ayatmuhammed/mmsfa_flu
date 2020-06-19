@@ -1,5 +1,5 @@
 //her i show all student that i will added it
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -11,9 +11,7 @@ import 'package:mmsfa_flu/database/viewModels/StudentsViewModel.dart';
 import 'package:mmsfa_flu/ui/dialog/AddStudentBottomSheet.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/student/AddStudentInformation.dart';
-import 'package:mmsfa_flu/ui/pages/student/StudentInformation.dart';
-import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
-import 'package:provider/provider.dart';
+
 
 class StudentsList extends StatefulWidget {
   final StudyClassModel classModel;

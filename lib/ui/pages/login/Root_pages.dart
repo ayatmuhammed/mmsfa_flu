@@ -3,11 +3,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
 import 'package:mmsfa_flu/database/viewModels/Auth.dart';
-import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
 import 'package:provider/provider.dart';
 
 import 'IntroSlider.dart';
-import 'file:///D:/Projects/Flutter/studentsAttendance/lib/ui/pages/login/LoginScreen.dart';
+import 'package:mmsfa_flu/ui/pages/login/LoginScreen.dart';
 
 import '../ClassesScreen.dart';
 

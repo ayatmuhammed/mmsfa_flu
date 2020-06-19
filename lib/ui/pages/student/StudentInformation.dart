@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mmsfa_flu/database/model/Student.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 
 class StudentInformation extends StatefulWidget {
