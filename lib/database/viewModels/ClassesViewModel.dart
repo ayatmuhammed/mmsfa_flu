@@ -7,9 +7,10 @@ import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 
 class ClassesViewModel {
   CollectionReference classesCollection;
+  final Firestore _firestore = Firestore.instance;
 
   ClassesViewModel(String userId) {
-    classesCollection = Firestore.instance
+    classesCollection = _firestore
         .collection(TeachersCollection.NAME)
         .document(userId)
         .collection(ClassesCollection.NAME);
@@ -28,8 +29,34 @@ class ClassesViewModel {
     }
   }
 
-  Future<void> deleteClass(String documentId) async {
-    await classesCollection.document(documentId).delete();
+  Future<void> deleteClass(StudyClassModel classModel) async {
+    final batch = _firestore.batch();
+    final classRef = classesCollection.document(classModel.classId);
+    final classStudents = await _getClassStudents(classModel.studentRefs);
+
+    batch.delete(classRef);
+    for (int i = 0; i < classStudents.length; i++) {
+      final studentRef = classModel.studentRefs[i];
+      final student = classStudents[i];
+
+      student.classRefs
+          .removeWhere((stuClassRef) => stuClassRef.path == classRef.path);
+      batch.updateData(studentRef, student.toJson());
+    }
+
+    await batch.commit();
+  }
+
+  Future<List<StudentModel>> _getClassStudents(
+      List<DocumentReference> studentsRefs) async {
+    List<StudentModel> students = [];
+
+    for (final studentRef in studentsRefs) {
+      final student = StudentModel.fromSnapshot(await studentRef.get());
+      students.add(student);
+    }
+
+    return students;
   }
 
   Stream<List<StudyClassModel>> getClassesStream(UserModel userModel) async* {

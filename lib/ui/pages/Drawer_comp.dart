@@ -145,9 +145,11 @@ class _DrawerCompState extends State<DrawerComp> {
                 Expanded(
                   child: Opacity(
                     opacity: 1,
-                    child: Container(
-                      padding: EdgeInsets.all(48.0),
-                      child: Lottie.asset("assets/student.json"),
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(48.0),
+                        child: Lottie.asset("assets/student.json"),
+                      ),
                     ),
                   ),
                 ),

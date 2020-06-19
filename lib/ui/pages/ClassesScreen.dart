@@ -112,7 +112,7 @@ class ClassesList extends StatelessWidget {
                 onEditPressed: () =>
                     showEditClassBottomSheet(context, studyClass),
                 onDeletePressed: () {
-                  viewModel.deleteClass(studyClass.classId);
+                  viewModel.deleteClass(studyClass);
                 },
                 onCardPressed: () {
                   Navigator.push(
