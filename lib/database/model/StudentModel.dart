@@ -22,7 +22,7 @@ class StudentModel extends UserModel {
         super.fromSnapshot(snapshot);
 
   Map<String, dynamic> toJson() {
-    final map = {
+    Map<String, dynamic> map = {
 //      StudentsCollection.CLASS_DEPARTMENT_FIELD: department,
 //      StudentsCollection.CLASS_BRANCH_FIELD: branch,
 //      StudentsCollection.CLASS_STAGE_FIELD: stage,

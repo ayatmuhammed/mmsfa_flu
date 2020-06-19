@@ -185,16 +185,13 @@ class _LoginBodyState extends State<LoginBody> {
   Widget _signInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () {
-        signInWithGoogle().whenComplete(() {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return ClassesScreen();
-              },
-            ),
-          );
-        });
+      onPressed: () async {
+        try {
+          await signInWithGoogle();
+        } on Exception catch (e) {
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text("Login failed: $e")));
+        }
       },
       shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.indigoAccent[100]),

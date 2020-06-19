@@ -96,16 +96,16 @@ class Auth implements BaseAuth {
                 : TeachersCollection.NAME)
             .document(firebaseUser.uid);
 
-        DocumentSnapshot docSnapshot = await docRef.get();
-        if (docSnapshot.data == null) {
-          await docRef
-              .setData({UsersCollection.EMAIL_FIELD: firebaseUser.email});
-          docSnapshot = await docRef.get();
+        await for (final docSnapshot in docRef.snapshots()) {
+          if (docSnapshot.data == null) {
+            await docRef
+                .setData({UsersCollection.EMAIL_FIELD: firebaseUser.email});
+          } else {
+            yield isUserStudent
+                ? StudentModel.fromSnapshot(docSnapshot)
+                : TeacherModel.fromSnapshot(docSnapshot);
+          }
         }
-
-        yield isUserStudent
-            ? StudentModel.fromSnapshot(docSnapshot)
-            : TeacherModel.fromSnapshot(docSnapshot);
       }
     }
   }
