@@ -42,13 +42,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
           ),
           centerTitle: true,
         ),
-        body: userModel == null
-            ? Center(
-                child: SpinKitChasingDots(
-                  color: Colors.indigo,
-                ),
-              )
-            : ClassesList(userModel: userModel, viewModel: viewModel),
+        body: ClassesList(userModel: userModel, viewModel: viewModel),
         floatingActionButton: userModel is TeacherModel
             ? FloatingActionButton(
                 child: Icon(
@@ -82,56 +76,62 @@ class ClassesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<StudyClassModel>>(
-      stream: viewModel.getClassesStream(userModel),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+    return userModel == null
+        ? Center(
             child: SpinKitChasingDots(
               color: Colors.indigo,
             ),
-          );
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Error: ${snapshot.error}"));
-        } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
-          return Center(child: Text("You have no classes!"));
-        } else {
-          List<StudyClassModel> studentClasses = snapshot.data;
+          )
+        : StreamBuilder<List<StudyClassModel>>(
+            stream: viewModel.getClassesStream(userModel),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: SpinKitChasingDots(
+                    color: Colors.indigo,
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}"));
+              } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
+                return Center(child: Text("You have no classes!"));
+              } else {
+                List<StudyClassModel> studentClasses = snapshot.data;
 
-          return ListView.builder(
-            itemCount: studentClasses.length,
-            itemBuilder: (BuildContext context, int index) {
-              final studyClass = studentClasses[index];
-              return ClassCard(
-                name: studyClass.className,
-                position: index + 1,
-                canEdit: userModel is TeacherModel,
-                onEditPressed: () =>
-                    showEditClassBottomSheet(context, studyClass),
-                onDeletePressed: () {
-                  viewModel.deleteClass(studyClass);
-                },
-                onCardPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => userModel is TeacherModel
-                            ? StudentsList(studyClass)
+                return ListView.builder(
+                  itemCount: studentClasses.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final studyClass = studentClasses[index];
+                    return ClassCard(
+                      name: studyClass.className,
+                      position: index + 1,
+                      canEdit: userModel is TeacherModel,
+                      onEditPressed: () =>
+                          showEditClassBottomSheet(context, studyClass),
+                      onDeletePressed: () {
+                        viewModel.deleteClass(studyClass);
+                      },
+                      onCardPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => userModel is TeacherModel
+                                  ? StudentsList(studyClass)
 //                        QrGenerator(
 //                                classModel: studyClass,
 //                                userId: userModel.userId,
 //                              )
-                            : ScanScreen(
-                                classRef: getClassRef(index),
-                              )),
-                  );
-                },
-              );
+                                  : ScanScreen(
+                                      classRef: getClassRef(index),
+                                    )),
+                        );
+                      },
+                    );
+                  },
+                );
+              }
             },
           );
-        }
-      },
-    );
   }
 
   DocumentReference getClassRef(int index) =>
