@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
+
 
 import 'UserModel.dart';
 

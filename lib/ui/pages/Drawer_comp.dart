@@ -10,12 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
-import 'package:mmsfa_flu/database/viewModels/Auth.dart';
-import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
-import 'package:mmsfa_flu/ui/pages/login/LoginScreen.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerComp extends StatefulWidget {
   @override
@@ -88,7 +84,7 @@ class _DrawerCompState extends State<DrawerComp> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
+                        color: Colors.white,
                         blurRadius: 2,
                         spreadRadius: 1,
                         offset: Offset(0, 1),
@@ -234,9 +230,11 @@ class _DrawerCompState extends State<DrawerComp> {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 32.0,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.bold
+                  ,
               ),
             )
+            ),
           ],
         ),
       ),

@@ -1,7 +1,4 @@
-import 'dart:async';
 import 'dart:typed_data';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -10,7 +7,6 @@ import 'package:mmsfa_flu/database/viewModels/QrGeneratorViewModel.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/ui/cards/StudentCard.dart';
-import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 import 'package:provider/provider.dart';
 
 class QrGenerator extends StatefulWidget {

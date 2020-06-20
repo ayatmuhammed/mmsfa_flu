@@ -1,13 +1,8 @@
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mmsfa_flu/database/model/StudentModel.dart';
-import 'package:mmsfa_flu/database/model/UserModel.dart';
 import 'package:mmsfa_flu/database/viewModels/Auth.dart';
 import 'package:mmsfa_flu/database/viewModels/DataBofLogin.dart';
-import 'package:mmsfa_flu/ui/pages/ClassesScreen.dart';
 
 import 'IntroSlider.dart';
 

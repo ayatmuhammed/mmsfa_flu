@@ -1,26 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:logger/logger.dart';
-import 'package:mmsfa_flu/database/viewModels/Auth.dart';
 import 'package:mmsfa_flu/database/viewModels/ClassesViewModel.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/database/model/TeacherModel.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
-import 'package:mmsfa_flu/database/model/class.dart';
 import 'package:mmsfa_flu/ui/cards/ClassCard.dart';
 import 'package:mmsfa_flu/ui/dialog/ClassBottomSheet.dart';
 import 'package:mmsfa_flu/ui/pages/Drawer_comp.dart';
-import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/ScanScreen.dart';
-import 'package:mmsfa_flu/ui/pages/student/EditStudentInformation.dart';
 import 'package:mmsfa_flu/ui/pages/student/StudentsList.dart';
-import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 import 'package:provider/provider.dart';
-
-import '../../main.dart';
 
 class ClassesScreen extends StatefulWidget {
   @override
