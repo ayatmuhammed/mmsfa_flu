@@ -47,7 +47,7 @@ class ScanScreenViewModel {
 
   bool _qrIsValid(StudyClassModel studyClass, List<String> parts) {
     final startDate = studyClass.lastLecture.startDate;
-    final qrTimeDiff = startDate.difference(DateTime.parse(parts[2])).inSeconds;
+    final qrTimeDiff = startDate.difference(DateTime.parse(parts[2])).inMinutes;
 
     return studyClass.lastLecture.lectureUrl == parts[1] &&
         (qrTimeDiff < 1 && qrTimeDiff > -1) &&

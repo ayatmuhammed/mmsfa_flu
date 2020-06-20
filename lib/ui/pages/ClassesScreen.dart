@@ -60,6 +60,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
   Future<void> showAddClassBottomSheet(BuildContext context) async {
     final className = await showModalBottomSheet<String>(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) => ClassBottomSheet(),
     );
 

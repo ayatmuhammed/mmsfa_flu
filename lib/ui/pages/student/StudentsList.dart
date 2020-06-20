@@ -12,7 +12,6 @@ import 'package:mmsfa_flu/ui/dialog/AddStudentBottomSheet.dart';
 import 'package:mmsfa_flu/ui/pages/QrGenerator.dart';
 import 'package:mmsfa_flu/ui/pages/student/AddStudentInformation.dart';
 
-
 class StudentsList extends StatefulWidget {
   final StudyClassModel classModel;
 
@@ -202,6 +201,7 @@ class _StudentsListState extends State<StudentsList> {
   void _addStudent(BuildContext context) async {
     final studentEmail = await showModalBottomSheet<String>(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) => AddStudentBottomSheet(),
     );
 
