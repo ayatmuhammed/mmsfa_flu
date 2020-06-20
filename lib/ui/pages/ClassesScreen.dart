@@ -25,7 +25,7 @@ class _ClassesScreenState extends State<ClassesScreen> {
   @override
   void didChangeDependencies() {
     userModel = Provider.of<UserModel>(context);
-    viewModel = ClassesViewModel(userModel.userId);
+    viewModel = ClassesViewModel(userModel?.userId);
     super.didChangeDependencies();
   }
 
@@ -42,7 +42,13 @@ class _ClassesScreenState extends State<ClassesScreen> {
           ),
           centerTitle: true,
         ),
-        body: ClassesList(userModel: userModel, viewModel: viewModel),
+        body: userModel == null
+            ? Center(
+                child: SpinKitChasingDots(
+                  color: Colors.indigo,
+                ),
+              )
+            : ClassesList(userModel: userModel, viewModel: viewModel),
         floatingActionButton: userModel is TeacherModel
             ? FloatingActionButton(
                 child: Icon(
