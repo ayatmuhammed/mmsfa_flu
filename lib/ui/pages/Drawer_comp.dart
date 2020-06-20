@@ -92,8 +92,8 @@ class _DrawerCompState extends State<DrawerComp> {
                     ],
                     gradient: LinearGradient(
                         colors: <Color>[
-                          Color(0xff141E30),
-                          Color(0xff243B55),
+                          Color(0xff3202b7),
+                          Color(0xffffffff),
                         ],
                         begin: AlignmentDirectional.topCenter,
                         end: AlignmentDirectional.bottomCenter),
