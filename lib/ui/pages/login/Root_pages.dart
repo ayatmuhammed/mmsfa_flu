@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mmsfa_flu/database/model/StudentModel.dart';
@@ -27,7 +28,7 @@ enum AuthStatus {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-  UserModel _userModel;
+  FirebaseUser _firebaseUser;
   bool firstLogin = false;
 
   @override
@@ -37,10 +38,10 @@ class _RootPageState extends State<RootPage> {
   }
 
   void listenToUserUpdates() {
-    widget.auth.getCurrentUserModelStream().listen((user) {
+    widget.auth.getFirebaseUserStream().listen((user) {
       setState(() {
         if (user != null) {
-          _userModel = user;
+          _firebaseUser = user;
         } else
           firstLogin = true;
 
@@ -70,17 +71,23 @@ class _RootPageState extends State<RootPage> {
         );
         break;
       case AuthStatus.LOGGED_IN:
-        return Provider.value(
-          value: _userModel,
-          child: firstLogin
-              ? IntroSlider(
-                  isStudent: _userModel is StudentModel,
-                  onTabDone: () => setState(() {
-                    firstLogin = false;
-                  }),
-                )
-              : ClassesScreen(),
-        );
+        return StreamBuilder<UserModel>(
+            stream: widget.auth.getUserModelStream(_firebaseUser),
+            builder: (context, snapshot) {
+              final userModel = snapshot.data;
+
+              return Provider.value(
+                value: userModel,
+                child: firstLogin
+                    ? IntroSlider(
+                        isStudent: userModel is StudentModel,
+                        onTabDone: () => setState(() {
+                          firstLogin = false;
+                        }),
+                      )
+                    : ClassesScreen(),
+              );
+            });
         break;
       default:
         return _buildWaitingScreen();
