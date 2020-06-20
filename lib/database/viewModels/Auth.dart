@@ -20,7 +20,9 @@ abstract class BaseAuth {
 
   Future<bool> isEmailVerified();
 
-  Stream<UserModel> getCurrentUserModelStream();
+  Stream<FirebaseUser> getFirebaseUserStream();
+
+  Stream<UserModel> getUserModelStream(FirebaseUser firebaseUser);
 
   bool isStudent(FirebaseUser firebaseUser);
 }
@@ -83,28 +85,30 @@ class Auth implements BaseAuth {
   bool isStudent(FirebaseUser user) => user.email.contains("@student");
 
   @override
-  Stream<UserModel> getCurrentUserModelStream() async* {
-    await for (final firebaseUser in _firebaseAuth.onAuthStateChanged) {
-      if (firebaseUser == null)
-        yield null;
-      else {
-        final isUserStudent = isStudent(firebaseUser);
+  Stream<FirebaseUser> getFirebaseUserStream() {
+    return _firebaseAuth.onAuthStateChanged;
+  }
 
-        final docRef = Firestore.instance
-            .collection(isUserStudent
-                ? StudentsCollection.NAME
-                : TeachersCollection.NAME)
-            .document(firebaseUser.uid);
+  @override
+  Stream<UserModel> getUserModelStream(FirebaseUser firebaseUser) async* {
+    if (firebaseUser == null)
+      yield null;
+    else {
+      final isUserStudent = isStudent(firebaseUser);
 
-        await for (final docSnapshot in docRef.snapshots()) {
-          if (docSnapshot.data == null) {
-            await docRef
-                .setData({UsersCollection.EMAIL_FIELD: firebaseUser.email});
-          } else {
-            yield isUserStudent
-                ? StudentModel.fromSnapshot(docSnapshot)
-                : TeacherModel.fromSnapshot(docSnapshot);
-          }
+      final docRef = Firestore.instance
+          .collection(
+              isUserStudent ? StudentsCollection.NAME : TeachersCollection.NAME)
+          .document(firebaseUser.uid);
+
+      await for (final docSnapshot in docRef.snapshots()) {
+        if (docSnapshot.data == null) {
+          await docRef
+              .setData({UsersCollection.EMAIL_FIELD: firebaseUser.email});
+        } else {
+          yield isUserStudent
+              ? StudentModel.fromSnapshot(docSnapshot)
+              : TeacherModel.fromSnapshot(docSnapshot);
         }
       }
     }
