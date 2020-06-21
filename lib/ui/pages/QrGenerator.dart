@@ -72,40 +72,40 @@ class _QrGeneratorState extends State<QrGenerator> {
                     ],
                   ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Text(
-                      "Students Attendance",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                StreamBuilder<List<StudentModel>>(
-                  stream: viewModel.getAttendedStudentsStream(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasError)
-                      return Center(child: Text(snapshot.error.toString()));
-                    else if (snapshot.hasData) {
-                      List<StudentModel> attendedStudents = snapshot.data;
-                      if (attendedStudents == null && attendedStudents.isEmpty)
-                        return SizedBox();
-
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return StudentCard(
-                            studentModel: attendedStudents[index],
-                          );
-                        },
-                        itemCount: attendedStudents.length,
-                      );
-                    } else
-                      return SizedBox();
-                  },
-                )
+//                Align(
+//                  alignment: Alignment.center,
+//                  child: Padding(
+//                    padding: const EdgeInsets.all(18.0),
+//                    child: Text(
+//                      "Students Attendance",
+//                      style:
+//                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                    ),
+//                  ),
+//                ),
+//                StreamBuilder<List<StudentModel>>(
+//                  stream: viewModel.getAttendedStudentsStream(),
+//                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+//                    if (snapshot.hasError)
+//                      return Center(child: Text(snapshot.error.toString()));
+//                    else if (snapshot.hasData) {
+//                      List<StudentModel> attendedStudents = snapshot.data;
+//                      if (attendedStudents == null && attendedStudents.isEmpty)
+//                        return SizedBox();
+//
+//                      return ListView.builder(
+//                        shrinkWrap: true,
+//                        itemBuilder: (BuildContext context, int index) {
+//                          return StudentCard(
+//                            studentModel: attendedStudents[index],
+//                          );
+//                        },
+//                        itemCount: attendedStudents.length,
+//                      );
+//                    } else
+//                      return SizedBox();
+//                  },
+//                )
               ],
             );
           },

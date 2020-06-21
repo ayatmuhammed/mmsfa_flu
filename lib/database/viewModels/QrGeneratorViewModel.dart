@@ -20,20 +20,20 @@ class QrGeneratorViewModel {
         .document(classModel.classId);
   }
 
-  Stream<List<StudentModel>> getAttendedStudentsStream() async* {
-    await for (final updateClassModel in classRef
-        .snapshots()
-        .map((docSnapshot) => StudyClassModel.fromSnapshot(docSnapshot))) {
-      final List<StudentModel> attendedStudents = [];
-      for (final studentRef
-          in updateClassModel.lastLecture.attendedStudentRefs) {
-        final studentModel = StudentModel.fromSnapshot(await studentRef.get());
-        attendedStudents.add(studentModel);
-      }
-
-      yield attendedStudents;
-    }
-  }
+//  Stream<List<StudentModel>> getAttendedStudentsStream() async* {
+//    await for (final updateClassModel in classRef
+//        .snapshots()
+//        .map((docSnapshot) => StudyClassModel.fromSnapshot(docSnapshot))) {
+//      final List<StudentModel> attendedStudents = [];
+//      for (final studentRef
+//          in updateClassModel.lastLecture.attendedStudentIds) {
+//        final studentModel = StudentModel.fromSnapshot(await studentRef.get());
+//        attendedStudents.add(studentModel);
+//      }
+//
+//      yield attendedStudents;
+//    }
+//  }
 
   Future<void> startNewLecture(String lectureUrl) async {
     LectureModel lecture = LectureModel(lectureUrl);

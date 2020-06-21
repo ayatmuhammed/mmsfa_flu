@@ -3,6 +3,8 @@ import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
 import 'package:mmsfa_flu/utils/DatabaseSchema.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
+const LECTURE_TIME_LIMIT = 20;
+
 class ScanScreenViewModel {
   String lectureUrl;
   bool isLoading = false;
@@ -21,16 +23,13 @@ class ScanScreenViewModel {
         final studyClass = StudyClassModel.fromSnapshot((docSnapshot));
 
         if (_qrIsValid(studyClass, parts)) {
-          final studentReference = Firestore.instance
-              .collection(StudentsCollection.NAME)
-              .document(userId);
+//          final studentReference = Firestore.instance
+//              .collection(StudentsCollection.NAME)
+//              .document(userId);
 
-          final attendedStudents = studyClass.lastLecture.attendedStudentRefs;
-          if (attendedStudents
-                  .where((e) => e.path == studentReference.path)
-                  .length <
-              1) {
-            studyClass.lastLecture.attendedStudentRefs.add(studentReference);
+          final attendedStudents = studyClass.lastLecture.attendedStudentIds;
+          if (attendedStudents.where((e) => e == userId).length < 1) {
+            studyClass.lastLecture.attendedStudentIds.add(userId);
             await classRef.updateData(studyClass.lastLecture.toJson());
           }
 
@@ -51,6 +50,6 @@ class ScanScreenViewModel {
 
     return studyClass.lastLecture.lectureUrl == parts[1] &&
         (qrTimeDiff < 1 && qrTimeDiff > -1) &&
-        DateTime.now().difference(startDate).inMinutes < 20;
+        DateTime.now().difference(startDate).inMinutes < LECTURE_TIME_LIMIT;
   }
 }

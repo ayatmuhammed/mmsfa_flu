@@ -22,5 +22,5 @@ class ClassesCollection {
   static const STUDENTS_REFS = "studentRefs";
   static const LECTURE_URL = "lectureUrl";
   static const START_DATE = "startDate";
-  static const ATTENDED_STUDENTS_REFS = "attendedStudentRefs";
+  static const ATTENDED_STUDENT_IDS = "attendedStudentIds";
 }

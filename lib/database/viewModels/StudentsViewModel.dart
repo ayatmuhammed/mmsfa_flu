@@ -21,12 +21,14 @@ class StudentsViewModel {
 
     return classDocStream.asyncMap<List<StudentModel>>((classSnapshot) async {
       final updatedClassModel = StudyClassModel.fromSnapshot(classSnapshot);
+      _classModel.lastLecture = updatedClassModel.lastLecture;
 
       List<StudentModel> students = [];
       for (final studentRef in updatedClassModel.studentRefs) {
         final student = StudentModel.fromSnapshot(await studentRef.get());
         students.add(student);
       }
+
       return students;
     });
   }
