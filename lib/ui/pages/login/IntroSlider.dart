@@ -14,7 +14,7 @@ class IntroSlider extends StatelessWidget {
     PageViewModel(
       pageColor: Colors.white,
       body: Text(
-        'Mobile Managment System For Attendent Student ',
+        'Mobile Management System For Attendant Student',
         style: TextStyle(color: Colors.indigo),
       ),
       title: Text(
@@ -31,7 +31,7 @@ class IntroSlider extends StatelessWidget {
     PageViewModel(
       pageColor: Colors.white,
       body: Text(
-        'Login With Your University Email ',
+        'Add Your Information',
         style: TextStyle(color: Colors.indigo),
       ),
       title: Text(
@@ -48,7 +48,7 @@ class IntroSlider extends StatelessWidget {
     PageViewModel(
       pageColor: Colors.white,
       body: Text(
-        'Add Your Information',
+        'Choose Your Class And Take An Scan For Qr',
         style: TextStyle(color: Colors.indigo),
       ),
       title: Text(
@@ -68,7 +68,7 @@ class IntroSlider extends StatelessWidget {
         PageViewModel(
           pageColor: Colors.white,
           body: Text(
-            'Mobile Managment System For Attendent Student ',
+            'Mobile Management System For Attendant Student',
             style: TextStyle(color: Colors.indigo),
           ),
           title: Text(
@@ -85,7 +85,7 @@ class IntroSlider extends StatelessWidget {
         PageViewModel(
           pageColor: Colors.white,
           body: Text(
-            'Login With Your University Email ',
+            'Add Your Information',
             style: TextStyle(color: Colors.indigo),
           ),
           title: Text(
