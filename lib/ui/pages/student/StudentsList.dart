@@ -1,4 +1,8 @@
 //her i show all student that i will added it
+import 'dart:ffi';
+
+import 'package:mmsfa_flu/database/viewModels/ScanScreenViewModel.dart';
+import 'package:mmsfa_flu/ui/cards/StudentCard.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +24,6 @@ class StudentsList extends StatefulWidget {
   @override
   _StudentsListState createState() => _StudentsListState();
 }
-
-final studentReference = FirebaseDatabase.instance.reference().child('student');
 
 class _StudentsListState extends State<StudentsList> {
 //now i design the ui to the user
@@ -56,75 +58,26 @@ class _StudentsListState extends State<StudentsList> {
               return Center(child: Text("You have no students!"));
             }
             final items = snapshot.data;
-
             return Center(
               child: ListView.builder(
                 itemCount: items.length,
                 padding: EdgeInsets.only(top: 15.0),
                 itemBuilder: (context, position) {
-                  return Column(
-                    children: <Widget>[
-                      Divider(color: Colors.indigo, height: 6.0),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ListTile(
-                              //now i want to display the name of user in list
-                              title: Text(
-                                '${items[position].username}',
-                                style: TextStyle(
-                                  color: Colors.indigo,
-                                  backgroundColor: Colors.purple[50],
-                                  fontSize: 22.0,
-                                ),
-                              ),
-//                              subtitle: Text(
-//                                '${items[position].department}',
-//                                style: TextStyle(
-//                                  color: Colors.amber,
-//                                  //  backgroundColor: Colors.purple[50],
-//                                  fontSize: 14.0,
-//                                ),
-//                              ),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.indigo,
-                                radius: 14.0,
-                                child: Text(
-                                  '${position + 1}',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    //  backgroundColor: Colors.purple[50],
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-                              ),
-                              onTap: () {
-                                _navigateStudentInformation(
-                                    context, items[position]);
-                              },
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              _deleteStudent(context, items[position]);
-                            },
-                          ),
-//                          IconButton(
-//                            icon: Icon(
-//                              Icons.edit,
-//                              color: Colors.indigo,
-//                            ),
-//                            onPressed: () {
-////                              _navigateStudent(context, items[position])
-//                            },
-//                          ),
-                        ],
-                      ),
-                    ],
+                  final studentModel = items[position];
+
+                  final lectureModel = widget.classModel.lastLecture;
+
+                  bool isAttended = isStudentAttended(studentModel);
+                  if (!isAttended && !lectureTimeUp(lectureModel)) {
+                    isAttended = null;
+                  }
+
+                  return StudentCard(
+                    position: position + 1,
+                    name: studentModel.username,
+                    onDeletePressed: () =>
+                        _deleteStudent(context, studentModel),
+                    isAttended: isAttended,
                   );
                 },
               ),
@@ -141,6 +94,20 @@ class _StudentsListState extends State<StudentsList> {
         ),
       ),
     );
+  }
+
+  bool isStudentAttended(StudentModel studentModel) {
+    final isAttended = widget.classModel.lastLecture.attendedStudentIds
+            .where((studentId) => studentId == studentModel.userId)
+            .length >
+        0;
+
+    return isAttended;
+  }
+
+  bool lectureTimeUp(LectureModel lectureModel) {
+    return DateTime.now().difference(lectureModel.startDate).inMinutes >=
+        LECTURE_TIME_LIMIT;
   }
 
   AppBar buildAppBar(BuildContext context) {

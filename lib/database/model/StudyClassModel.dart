@@ -37,10 +37,10 @@ class StudyClassModel {
 class LectureModel {
   String lectureUrl;
   DateTime startDate;
-  List<DocumentReference> attendedStudentRefs;
+  List<String> attendedStudentIds;
 
   LectureModel(this.lectureUrl) {
-    attendedStudentRefs = [];
+    attendedStudentIds = [];
     startDate = DateTime.now();
   }
 
@@ -49,18 +49,17 @@ class LectureModel {
         startDate =
             (map[ClassesCollection.START_DATE] as Timestamp)?.toDate() ??
                 DateTime.now(),
-        attendedStudentRefs = map[ClassesCollection.ATTENDED_STUDENTS_REFS]
-                ?.cast<DocumentReference>() ??
-            [];
+        attendedStudentIds =
+            map[ClassesCollection.ATTENDED_STUDENT_IDS]?.cast<String>() ?? [];
 
   Map<String, dynamic> toJson() => {
         ClassesCollection.LECTURE_URL: lectureUrl,
         ClassesCollection.START_DATE: startDate,
-        ClassesCollection.ATTENDED_STUDENTS_REFS: attendedStudentRefs,
+        ClassesCollection.ATTENDED_STUDENT_IDS: attendedStudentIds,
       };
 
   @override
   String toString() {
-    return 'LectureModel{lectureUrl: $lectureUrl, startDate: $startDate, attendedStudentRefs: $attendedStudentRefs}';
+    return 'LectureModel{lectureUrl: $lectureUrl, startDate: $startDate, attendedStudentRefs: $attendedStudentIds}';
   }
 }
