@@ -40,7 +40,7 @@ class QrGeneratorViewModel {
     classModel.lastLecture = lecture;
     try {
       await classRef.updateData(classModel.lastLecture.toJson());
-      _generateBarCode();
+      await _generateBarCode();
     } on Exception catch (e) {
       throw e;
     }
