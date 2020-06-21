@@ -36,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+
         backgroundColor: Colors.white,
         body: animationCompleted
             ? LoginBody(auth: widget.baseAuth)
@@ -85,73 +86,75 @@ class _LoginBodyState extends State<LoginBody> {
   @override
   Widget build(BuildContext context) {
     //now i build the user interface
-    return Container(
-      padding: EdgeInsets.all(50.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Form(
-            key: formState,
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.email,
+
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(50.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Form(
+              key: formState,
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.email,
+                            color: Colors.indigo,
+                          ),
+                          hintText: 'Email'),
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return 'Enter Your Email';
+                        } else if (val.length < 5) {
+                          return 'error';
+                        } else
+                          return null;
+                      },
+                      onSaved: (val) {
+                        _email = val;
+                      },
+                    ),
+
+                    // sizedBox it give space between more widget
+                    SizedBox(
+                      height: 15.0,
+                    ),
+
+                    TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.lock,
+                            color: Colors.indigo,
+                          ),
+                          hintText: 'Password'),
+                      // controller: _passWordController,
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return 'Enter Your Password';
+                        } else if (val.length < 5) {
+                          return 'error';
+                        } else
+                          return null;
+                      },
+
+                      onSaved: (val) {
+                        _password = val;
+                      },
+                    ),
+                    SizedBox(
+                      height: 60.0,
+                    ),
+                    Builder(
+                      builder: (BuildContext context) {
+                        return MaterialButton(
+                          child: Text('Login',
+                              style: TextStyle(color: Colors.white)),
                           color: Colors.indigo,
-                        ),
-                        hintText: 'Email'),
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return 'Enter Your Email';
-                      } else if (val.length < 5) {
-                        return 'error';
-                      } else
-                        return null;
-                    },
-                    onSaved: (val) {
-                      _email = val;
-                    },
-                  ),
-
-                  // sizedBox it give space between more widget
-                  SizedBox(
-                    height: 15.0,
-                  ),
-
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.lock,
-                          color: Colors.indigo,
-                        ),
-                        hintText: 'Password'),
-                    // controller: _passWordController,
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return 'Enter Your Password';
-                      } else if (val.length < 5) {
-                        return 'error';
-                      } else
-                        return null;
-                    },
-
-                    onSaved: (val) {
-                      _password = val;
-                    },
-                  ),
-                  SizedBox(
-                    height: 60.0,
-                  ),
-                  Builder(
-                    builder: (BuildContext context) {
-                      return MaterialButton(
-                        child: Text('Login',
-                            style: TextStyle(color: Colors.white)),
-                        color: Colors.indigo,
-                        onPressed: () {
+                          onPressed: () {
 //                        Navigator.of(context).pushNamed('/homepage');
 //                        FirebaseAuth.instance
 //                            .createUserWithEmailAndPassword(
@@ -161,18 +164,19 @@ class _LoginBodyState extends State<LoginBody> {
 //                        }).catchError((e) {
 //                          print(e);
 //                        });
-                          login(context);
-                        },
-                      );
-                    },
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 25.0)),
-                  _signInButton(),
-                ],
+                            login(context);
+                          },
+                        );
+                      },
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 25.0)),
+                    _signInButton(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
