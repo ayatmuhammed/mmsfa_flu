@@ -224,17 +224,15 @@ class _DrawerCompState extends State<DrawerComp> {
               ),
             ),
             Positioned(
-              top: 32,
-              child: Text(
-                'User Profile',
-                style: TextStyle(
+                top: 32,
+                child: Text(
+                  'User Profile',
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: 32.0,
-                    fontWeight: FontWeight.bold
-                  ,
-              ),
-            )
-            ),
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
           ],
         ),
       ),
