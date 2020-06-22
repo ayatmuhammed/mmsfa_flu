@@ -41,12 +41,15 @@ class _QrGeneratorState extends State<QrGenerator> {
             onPressed: () => Navigator.of(context).pop('/homepage'),
           ),
           backgroundColor: Colors.white,
-          title: Text(
-            'Qr Generator',
-            style: TextStyle(color: Colors.indigo),
+          title: Padding(
+            padding: const EdgeInsets.only(left:50.0),
+            child: Text(
+              'Qr Generator',
+              style: TextStyle(color: Colors.indigo),
+            ),
           ),
         ),
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Colors.white,
         body: Builder(
           builder: (BuildContext context) {
             return ListView(
@@ -59,13 +62,16 @@ class _QrGeneratorState extends State<QrGenerator> {
                     children: <Widget>[
                       Padding(
                           padding: EdgeInsets.only(top: 10.0, bottom: 10.0)),
-                      TextField(
-                        controller: this._inputController,
-                        keyboardType: TextInputType.url,
-                        textInputAction: TextInputAction.go,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.text_fields),
-                          hintText: 'Please Input Your url of lecture',
+                      Padding(
+                        padding: const EdgeInsets.only(left:26.0,right: 26),
+                        child: TextField(
+                          controller: this._inputController,
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.go,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.text_fields),
+                            hintText: 'Please Input Your url of lecture',
+                          ),
                         ),
                       ),
                       this._buttonGroup(context),
@@ -126,7 +132,7 @@ class _QrGeneratorState extends State<QrGenerator> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Icon(Icons.verified_user, size: 18, color: Colors.green),
-                  Text('  Generate Qrcode', style: TextStyle(fontSize: 15)),
+                  Text('  Generate Qr Code', style: TextStyle(fontSize: 15,color: Colors.white)),
                 ],
               ),
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
@@ -214,11 +220,13 @@ class _QrGeneratorState extends State<QrGenerator> {
           !viewModel.isLoading
               ? Expanded(
                   flex: 1,
-                  child: GestureDetector(
-                    onTap: () => _onGenerateClicked(context),
-                    child: Text(
-                      'Generate',
-                      style: TextStyle(color: Colors.red),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () => _onGenerateClicked(context),
+                      child: Text(
+                        'Generate',
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
                   ),
                 )
