@@ -1,3 +1,5 @@
+// ignore: avoid_web_libraries_in_flutter
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +23,18 @@ class ClassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 180,
-      width: 300,
-      child: Card(
-        margin: EdgeInsets.all(10.0),
-        color: Colors.white,
-
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      margin: EdgeInsets.all(10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/icon.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        height: 180,
+        width: 300,
         child: Column(
           children: <Widget>[
             Row(
