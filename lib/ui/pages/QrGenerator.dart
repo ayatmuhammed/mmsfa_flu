@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mmsfa_flu/database/model/UserModel.dart';
 import 'package:mmsfa_flu/database/viewModels/QrGeneratorViewModel.dart';
-import 'package:mmsfa_flu/database/model/StudentModel.dart';
 import 'package:mmsfa_flu/database/model/StudyClassModel.dart';
-import 'package:mmsfa_flu/ui/cards/StudentCard.dart';
 import 'package:provider/provider.dart';
 
 class QrGenerator extends StatefulWidget {
@@ -42,7 +40,7 @@ class _QrGeneratorState extends State<QrGenerator> {
           ),
           backgroundColor: Colors.white,
           title: Padding(
-            padding: const EdgeInsets.only(left:50.0),
+            padding: const EdgeInsets.only(left: 50.0),
             child: Text(
               'Qr Generator',
               style: TextStyle(color: Colors.indigo),
@@ -63,7 +61,7 @@ class _QrGeneratorState extends State<QrGenerator> {
                       Padding(
                           padding: EdgeInsets.only(top: 10.0, bottom: 10.0)),
                       Padding(
-                        padding: const EdgeInsets.only(left:26.0,right: 26),
+                        padding: const EdgeInsets.only(left: 26.0, right: 26),
                         child: TextField(
                           controller: this._inputController,
                           keyboardType: TextInputType.url,
@@ -132,7 +130,8 @@ class _QrGeneratorState extends State<QrGenerator> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Icon(Icons.verified_user, size: 18, color: Colors.green),
-                  Text('  Generate Qr Code', style: TextStyle(fontSize: 15,color: Colors.white)),
+                  Text('  Generate Qr Code',
+                      style: TextStyle(fontSize: 15, color: Colors.white)),
                 ],
               ),
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
