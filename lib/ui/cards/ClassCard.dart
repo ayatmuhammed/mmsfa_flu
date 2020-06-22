@@ -27,6 +27,7 @@ class ClassCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.all(10.0),
         color: Colors.white,
+
         child: Column(
           children: <Widget>[
             Row(
