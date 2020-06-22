@@ -36,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-
         backgroundColor: Colors.white,
         body: animationCompleted
             ? LoginBody(auth: widget.baseAuth)
@@ -89,6 +88,7 @@ class _LoginBodyState extends State<LoginBody> {
 
     return SingleChildScrollView(
       child: Container(
+        height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(50.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
