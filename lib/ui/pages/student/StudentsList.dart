@@ -119,7 +119,7 @@ class _StudentsListState extends State<StudentsList> {
       ),
       actions: <Widget>[
         FlatButton(
-          color: Colors.white,
+          color: Colors.indigo,
           onPressed: () {
             Navigator.push(
               context,
@@ -129,12 +129,15 @@ class _StudentsListState extends State<StudentsList> {
               ),
             );
           },
-          child: Text(
-            '- QR Generate',
-            style: TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.indigo),
+          child: Padding(
+            padding: const EdgeInsets.only(top:4.0),
+            child: Text(
+              'QR Generate',
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
           ),
         ),
       ],
